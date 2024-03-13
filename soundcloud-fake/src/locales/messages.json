@@ -1,0 +1,59 @@
+{
+    "header": {
+      "login": "Đăng nhập",
+      "sign_out": "Đăng xuất",
+      "search": "Tìm kiếm"
+    },
+    "validates": {
+      "invalid_username": "Username must be at least 6 characters",
+      "username_not_found": "Username not found",
+      "username_no_space": "Username must not include spaces",
+      "required": " field is required",
+      "error_password_min_length": "Passwords must be at least 6 characters",
+      "error_password_max_length": "Passwords must not exceed 32 characters",
+      "error_password_format": "Passwords must include an uppercase letter and a number",
+      "error_confirm_password": "Passwords don't match"
+    },
+    "auth_layout": {
+      "title": "Trở thành Fullstack Developer cùng Js4ever Team"
+    },
+    "auth_login": {
+      "login": "Đăng nhập",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "remember": "Ghi nhớ đăng nhập",
+      "forgot": "Quên mật khẩu",
+      "or_login_with": "Hoặc đăng nhập với",
+      "dont_have_account": "Bạn chưa có tài khoản?",
+      "register_now": "Đăng ký ngay"
+    },
+    "auth_register": {
+      "full_name": "Họ và tên",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirm": "Nhập lại mật khẩu",
+      "register": "Đăng ký",
+      "or_register_with": "Hoặc đăng ký với",
+      "have_account": "Bạn đã có tài khoản?",
+      "login_now": "Đăng nhập ngay"
+    },
+    "not_found": {
+      "title": "404: Không tìm thấy trang...",
+      "back_to_home": "Về trang chủ"
+    },
+    "challenge_detail": {
+      "level_hard": "Khó",
+      "level_medium": "Trung bình",
+      "level_easy": "Dễ",
+      "description": "Mô tả",
+      "hint": "Gợi ý",
+      "minute": "phút",
+      "completed": "hoàn thành",
+      "save": "Lưu",
+      "file_exp": "Quản lý tệp",
+      "run": "Chạy",
+      "auto_save": "Tự động lưu",
+      "auto_compile": "Tự động dịch"
+    }
+  }
+  

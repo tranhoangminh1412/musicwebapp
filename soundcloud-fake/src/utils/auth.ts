@@ -2,14 +2,20 @@ import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
-import { sql } from '@vercel/postgres';
-import type { User } from '@/app/lib/definitions';
+import type { IUser } from '@/types/IUser';
 import bcrypt from 'bcrypt';
+import { users } from '@/constants/users.constant';
+import { error } from 'console';
 
-async function getUser(email: string): Promise<User | undefined> {
+
+async function getUser(username: string): Promise<IUser | undefined> {
   try {
-    const user = await sql<User>`SELECT * FROM users WHERE email=${email}`;
-    return user.rows[0];
+    users.forEach(u => {
+      if(username == u.username){
+          return u
+      }
+    });
+    throw error
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
@@ -20,22 +26,22 @@ export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
-      async authorize(credentials) {
-        const parsedCredentials = z
-          .object({ email: z.string().email(), password: z.string().min(6) })
-          .safeParse(credentials);
+      // async authorize(credentials) {
+      //   const parsedCredentials = z
+      //     .object({ username: z.string().min(6), password: z.string().min(6) })
+      //     .safeParse(credentials);
 
-        if (parsedCredentials.success) {
-          const { email, password } = parsedCredentials.data;
-          const user = await getUser(email);
-          if (!user) return null;
-          const passwordsMatch = await bcrypt.compare(password, user.password);
+      //   if (parsedCredentials.success) {
+      //     const { username, password } = parsedCredentials.data;
+      //     const user = await getUser(username);
+      //     if (!user) return null;
+      //     const passwordsMatch = await bcrypt.compare(password, user.password);
 
-          if (passwordsMatch) return user;
-        }
-        console.log('Invalid credentials');
-        return null;
-      },
+      //     if (passwordsMatch) return user;
+      //   }
+      //   console.log('Invalid credentials');
+      //   return null;
+      // },
     }),
   ],
 });

@@ -1,14 +1,15 @@
 import * as React from 'react';
+import Image from 'next/image';
 
-import logo from '../../../public/logo.svg'
+import logo from '@/assets/app/logoWithName.svg'
 
 export interface IIcLogoProps {
 }
 
 export default function IcLogo (props: IIcLogoProps) {
   return (
-    <div className="size-16" style={{width: '68px', height:'68px'}}>
-      <img className="bg-cover " src={logo} />
+    <div className="!w-[240px] object-cover" >
+      <Image className='!w-[240px] object-cover' src={logo} alt='' />
     </div>
   );
 }
