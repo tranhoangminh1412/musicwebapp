@@ -54,6 +54,13 @@
       "run": "Chạy",
       "auto_save": "Tự động lưu",
       "auto_compile": "Tự động dịch"
+    },
+    "toast" :
+    {
+        "login_success": "Login successful!",
+        "register_success": "Register Successful!",
+        "login_failed": "Login failed",
+        "register_failed": "Register failed"
     }
   }
   

@@ -17,7 +17,7 @@ import { getUserProfile } from "@/api/api";
 import {
   UserProfileContext,
   useUserProfileContext,
-} from "@/contexts/ProfileContext";
+} from "@/contexts/AuthContext";
 import { IResUserProfile } from "@/types/auth.type";
 
 export interface IGlobalMainPageProps {

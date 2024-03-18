@@ -57,7 +57,7 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
             <CaseActionButton
               text="Sign In"
               color="white"
-              onClick={() => router.push("/auth/login")}
+              onClick={() => router.push("/auth/login") }
             />
             <CaseActionButton
               text="Sign Up"
@@ -78,7 +78,8 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
               </div>
             </div>
           </div>
-        )}
+        )
+      }
       </div>
     </header>
   );
