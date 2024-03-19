@@ -1,4 +1,7 @@
-
+import TrungQuan from '@/assets/images/TrungQuan.jpeg'
+import HoangDung from '@/assets/images/NangTho.jpeg'
+import VoiBanDon from '@/assets/images/rain.jpeg'
+import BuiAnhTuan from '@/assets/images/BuiAnhTuan.jpeg'
 
 export const songs = [
     {
@@ -7,6 +10,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 14,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:1,
@@ -14,6 +20,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 2,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:2,
@@ -21,6 +30,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 6,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:3,
@@ -28,6 +40,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 3,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:4,
@@ -35,6 +50,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 1,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:5,
@@ -42,6 +60,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 7,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:6,
@@ -49,6 +70,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 11,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:7,
@@ -56,6 +80,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 8,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:8,
@@ -63,6 +90,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 13,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:9,
@@ -70,6 +100,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 4,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:10,
@@ -77,6 +110,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 10,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:11,
@@ -84,6 +120,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 12,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:12,
@@ -91,6 +130,9 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 5,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
     {
         id:13,
@@ -98,5 +140,8 @@ export const songs = [
         artist: "Trung Quân",
         length: "3:14",
         plays: 9,
+        genre: "rock",
+        image: TrungQuan,
+        likes: 12,
     },
 ]

@@ -7,26 +7,26 @@ export const artists = [
     {
         id: 0,
         name: "Trung Quân",
-        plays: 1234,
-        image: "TrungQuan.jpeg",
+        plays: 123,
+        image: TrungQuan
     },
     {
         id: 1,
         name: "Hoàng Dũng",
         plays: 1234,
-        image: "NangTho.jpeg"
+        image: HoangDung
     },
     {
         id: 2,
-        name: "Voi Bản Đôi",
-        plays: 1234,
-        image: "rain.jpeg"
+        name: "Voi Bản Đôn",
+        plays: 1,
+        image: VoiBanDon
     },
     {
         id: 3,
         name: "Bùi Anh Tuấn",
-        plays: 1234,
-        image: "BuiAnhTuan.jpeg"
+        plays: 12,
+        image: BuiAnhTuan
     },
     
 ]

@@ -47,18 +47,14 @@ export default function TopPlaylistAuthorShowcase(
     return a;
   };
 
-  // let imgClass = `bg-[url('../assets/images/${topSongArtist().image}')]`
-
-  console.log(topSongArtist().image)
-
   return (
     <div
-      className={`relative w-[285px] h-[185px] bg-cover `}
+      className={`relative w-[285px] h-[185px] bg-cover bg-[url('../assets/images/BuiAnhTuan.jpeg')] `}
     >
-        <div className="absolute bottom-0 bg-gradient-to-t from-black w-[100%] h-[76px] flex align-middle py-3" >
-            <title className="font-bold text-lg text-white">
+        <div className="absolute bottom-0 bg-gradient-to-t from-black w-[285px] h-[76px] flex align-middle py-3" >
+            <div className="font-bold text-lg text-white">
                 {topSongArtist().name}
-            </title>
+            </div>
             <p className="text-white font-normal text-sm">
                 {topSong()?.name}
             </p>
