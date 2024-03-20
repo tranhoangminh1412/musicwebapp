@@ -7,3 +7,7 @@
     text-wrap: balance;
   }
 }
+
+.overflow-y-auto::-webkit-scrollbar {
+  display: none;
+}

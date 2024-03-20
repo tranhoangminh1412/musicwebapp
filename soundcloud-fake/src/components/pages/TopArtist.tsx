@@ -33,7 +33,7 @@ export default function TopArtist(props: ITopArtistProps) {
     <div className="flex gap-6 items-center">
       <Image
         style={{objectFit: 'cover'}}
-        className="rounded-full bg-cover size-20 drop-shadow-xl"
+        className="rounded-full bg-cover size-20 drop-shadow-2xl"
         src={artist.image}
         alt=""
       />

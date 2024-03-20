@@ -12,12 +12,12 @@ export interface ISongShowcaseProps {
 }
 
 export default function SongShowcase(props: ISongShowcaseProps) {
-  const { no, song } = props;
+  const { no, song} = props;
 
   const activeHeart = () => {};
 
   return (
-    <div className="min-w-[887px] flex items-center border-b border-[#DCDCDC] p-2">
+    <div className="min-w-[887px] flex items-center border-b border-[#DCDCDC] p-2 hover:bg-[#F9F9F9] ">
       <div className="flex items-center content-center font-medium text-sm leading-[21px] w-[60px]">
         {no}
       </div>
@@ -27,7 +27,7 @@ export default function SongShowcase(props: ISongShowcaseProps) {
           <p className="font-medium text-[14px] leading-[21px] ">{song.name}</p>
           <div className="flex items-center gap-[10px]">
             <div className="flex items-center gap-[4px] font-medium text-[10px] leading-15px">
-              <IcPlay classes="w-[10px] h-[10px]" />
+              <IcPlay color="black" classes="w-[10px] h-[10px]" />
               {song.plays}
             </div>
             <div className="flex items-center gap-[4px] font-medium text-[10px] leading-15px">

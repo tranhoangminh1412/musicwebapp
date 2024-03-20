@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react";
+import { useState } from "react";
 
 import Image from "next/image";
 
@@ -11,16 +14,26 @@ import { orderedPopularArtists } from "@/utils/orderPopularArtist";
 import TopArtist from "@/components/pages/TopArtist";
 import { songs } from "@/constants/songs.constant";
 import SongShowcase from "@/components/pages/SongShowcase";
+import ListPages from "@/components/share/ListPages/ListPages";
+import PlaylistShowcase from "@/components/share/PlaylistShowcase/PlaylistShowcase";
+import { playlists } from "@/constants/playlists.constant";
 
 export interface IHomeProps {}
 
 export default function Home(props: IHomeProps) {
-  const moveLeft = () => {};
+  const [currentPage, setCurrentPage] = useState(1);
 
+  let showSongIndex: number = 0;
+  let maxSongShowcase = 10;
+
+  const moveLeft = () => {};
   const moveRight = () => {};
 
   const popularPlaylists = orderedPopularPlaylist();
   const popularArtists = orderedPopularArtists();
+
+  let numLikedPages = Math.floor(songs.length / maxSongShowcase);
+  if (songs.length % maxSongShowcase != 0) numLikedPages += 1;
 
   return (
     <div className="flex items-center justify-center">
@@ -47,13 +60,55 @@ export default function Home(props: IHomeProps) {
           </div>
         </div>
         <div className="flex gap-6">
-          <div>
-            <div className="content-center font-bold text-4xl leading-[54px] pl-6">
-              Liked songs
+          <div className="flex flex-col gap-6">
+            <div>
+              <div className="content-center font-bold text-4xl leading-[54px]">
+                Liked songs
+              </div>
+              <div className="min-w-[887px] flex items-center border-b border-[#DCDCDC] p-2">
+                <div className="flex items-center content-center font-medium text-sm leading-[21px] w-[60px]">
+                  No
+                </div>
+                <div className="flex items-center gap-4 w-full text-sm leading-[21px]">
+                  Song
+                </div>
+                <div className="w-[150px] px-[10px] py-2 text-sm leading-[21px]">
+                  Author
+                </div>
+                <div className="w-[140px] px-[10px] py-2 text-sm leading-[21px]">
+                  Genre
+                </div>
+                <div className="w-[80px] px-[10px] py-2 text-sm leading-[21px]">
+                  Length
+                </div>
+                <div className="w-[100px] px-[10px] py-2 text-sm leading-[21px] flex gap-4"></div>
+              </div>
+              {songs.map(function (data) {
+                if (
+                  showSongIndex < maxSongShowcase &&
+                  data.id < currentPage * maxSongShowcase &&
+                  data.id > (currentPage - 1) * maxSongShowcase - 1
+                ) {
+                  showSongIndex += 1;
+                  return (
+                    <SongShowcase key={data.id} song={data} no={data.id + 1} />
+                  );
+                }
+              })}
+              <ListPages
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                numPages={numLikedPages}
+              />
             </div>
-            {songs.map(function (data) {
-              return <SongShowcase song={data} no={data.id} />;
-            })}
+            <div className="content-center font-bold text-4xl leading-[54px]">
+              My Playlists
+            </div>
+            {
+              playlists.map(function (data) {
+                return <PlaylistShowcase playlist={data} />
+              })
+            }
           </div>
           <div className="flex flex-col content-center w-1/3 ml-auto">
             <div className="content-center font-bold text-4xl leading-[54px] pl-6">
