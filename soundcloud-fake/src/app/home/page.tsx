@@ -8,15 +8,17 @@ import Image from "next/image";
 import btnLeft from "@/assets/app/btn-left.svg";
 import btnRight from "@/assets/app/btn-right.svg";
 
-import TopPlaylistAuthorShowcase from "@/components/pages/TopPlaylistAuthorShowcase";
 import { orderedPopularPlaylist } from "@/utils/orderPopularPlaylists";
 import { orderedPopularArtists } from "@/utils/orderPopularArtist";
-import TopArtist from "@/components/pages/TopArtist";
+
 import { songs } from "@/constants/songs.constant";
+import { playlists } from "@/constants/playlists.constant";
+
+import TopArtist from "@/components/pages/TopArtist";
 import SongShowcase from "@/components/pages/SongShowcase";
 import ListPages from "@/components/share/ListPages/ListPages";
 import PlaylistShowcase from "@/components/share/PlaylistShowcase/PlaylistShowcase";
-import { playlists } from "@/constants/playlists.constant";
+import TopPlaylistAuthorContainer from "@/components/pages/TopPlaylistAuthorContainer";
 
 export interface IHomeProps {}
 
@@ -46,18 +48,7 @@ export default function Home(props: IHomeProps) {
               <Image src={btnRight} alt="" />
             </div>
           </div>
-          <div className="gap-4 flex overflow-hidden">
-            {popularPlaylists.map(function (data) {
-              return (
-                <TopPlaylistAuthorShowcase
-                  key={data.id}
-                  playlistId={data.id}
-                  name={data.name}
-                  popularSongIndex={data.songs[0]}
-                />
-              );
-            })}
-          </div>
+          <TopPlaylistAuthorContainer />
         </div>
         <div className="flex gap-6">
           <div className="flex flex-col gap-6">
@@ -104,11 +95,9 @@ export default function Home(props: IHomeProps) {
             <div className="content-center font-bold text-4xl leading-[54px]">
               My Playlists
             </div>
-            {
-              playlists.map(function (data) {
-                return <PlaylistShowcase playlist={data} />
-              })
-            }
+            {playlists.map(function (data) {
+              return <PlaylistShowcase key={data.id} playlist={data} />;
+            })}
           </div>
           <div className="flex flex-col content-center w-1/3 ml-auto">
             <div className="content-center font-bold text-4xl leading-[54px] pl-6">

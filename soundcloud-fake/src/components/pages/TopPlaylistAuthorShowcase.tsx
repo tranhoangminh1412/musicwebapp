@@ -51,7 +51,7 @@ export default function TopPlaylistAuthorShowcase(
     <div
       className={`relative w-[285px] h-[185px] bg-cover bg-[url('../assets/images/BuiAnhTuan.jpeg')] `}
     >
-        <div className="absolute bottom-0 bg-gradient-to-t from-black w-[285px] h-[76px] flex align-middle py-3" >
+        <div className="absolute bottom-0 bg-gradient-to-t from-black w-[285px] h-[76px] flex flex-col text-center py-3" >
             <div className="font-bold text-lg text-white">
                 {topSongArtist().name}
             </div>
