@@ -2,12 +2,14 @@
 
 import * as React from "react";
 
+import defaultAva from "@/assets/app/765-default-avatar.png"
+
 import Image from "next/image";
 
 export interface IAvatarProps {
   height: number;
   width: number;
-  src: string;
+  src?: string;
   onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
 }
 
@@ -26,7 +28,7 @@ export default function Avatar(props: IAvatarProps) {
       <Image
         height={height}
         width={width}
-        src={src}
+        src={src || defaultAva}
         alt=""
         className="object-cover"
       />

@@ -4,6 +4,7 @@ import * as React from "react";
 import { useState } from "react";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import btnLeft from "@/assets/app/btn-left.svg";
 import btnRight from "@/assets/app/btn-right.svg";
@@ -27,6 +28,8 @@ export default function Home(props: IHomeProps) {
 
   let showSongIndex: number = 0;
   let maxSongShowcase = 10;
+
+  const router = useRouter();
 
   const moveLeft = () => {};
   const moveRight = () => {};
@@ -92,15 +95,18 @@ export default function Home(props: IHomeProps) {
                 numPages={numLikedPages}
               />
             </div>
-            <div className="content-center font-bold text-4xl leading-[54px]">
+            <div className="relative content-center font-bold text-4xl leading-[54px]">
               My Playlists
+              <div onClick={() => router.push('/home/createplaylist')} className="cursor-pointer absolute bottom-0 right-0 text-sm leading-[21px] text-[#0094FF]" >
+                Create New
+              </div>
             </div>
             {playlists.map(function (data) {
               return <PlaylistShowcase key={data.id} playlist={data} />;
             })}
           </div>
           <div className="flex flex-col content-center w-1/3 ml-auto">
-            <div className="content-center font-bold text-4xl leading-[54px] pl-6">
+            <div className="relative content-center font-bold text-4xl leading-[54px] pl-6">
               Top Artists
             </div>
             <div className="gap-6 py-4 px-6 flex flex-col content-center">

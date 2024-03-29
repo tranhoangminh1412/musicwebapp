@@ -1,7 +1,7 @@
 export type IUser = {
     id: number;
-    name: string;
+    name?: string;
     username: string;
-    password: string;
-    avatarUrl: string;
+    password?: string;
+    avatarUrl?: string;
 };

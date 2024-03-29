@@ -1,34 +1,15 @@
-import React, { createContext, useContext, useState } from 'react';
+"use client";
 
-// Define AuthState interface
-interface AuthState {
+import React, { useContext } from "react";
+
+export interface IAuthContext {
   authenticated: boolean;
-  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  setAuthenticated: any;
 }
 
-// Create and export AuthContext
-export const AuthContext = createContext<AuthState | null>(null);
+export const AuthContext = React.createContext<IAuthContext>({
+  authenticated: false,
+  setAuthenticated: () => {},
+});
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-// Define AuthProviderProps interface
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
-
-  const value: AuthState = {
-    authenticated,
-    setAuthenticated,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
+export const useAuthContext = () => useContext(AuthContext);

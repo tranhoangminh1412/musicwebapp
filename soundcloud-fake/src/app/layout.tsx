@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import GlobalHeader from "@/components/layouts/GlobalHeader";
+import { Providers } from "@/providers/providers";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { useUserProfileContext } from "@/contexts/ProfileContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,6 +15,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
@@ -19,8 +23,10 @@ export default function RootLayout({
         <title>Music App</title>
       </head>
       <body suppressHydrationWarning={true}>
-        <GlobalHeader />
-        {children}
+        <Providers>
+          <GlobalHeader />
+          {children}
+        </Providers>  
       </body>
     </html>
   );

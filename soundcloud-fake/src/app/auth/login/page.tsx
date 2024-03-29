@@ -1,9 +1,19 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
+
+import { FcGoogle } from "react-icons/fc";
+import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
+import axios from "axios";
+import https from "https";
 
 import { useRouter } from "next/navigation";
 import { useUserProfileContext } from "@/contexts/ProfileContext";
+import { useAuthContext } from "@/contexts/AuthContext";
+// import useLocalStorage from "@/hooks/useLocalStorage"
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -23,14 +33,39 @@ import loginImage from "@/assets/app/login-image.png";
 import InpTextField from "@/components/share/InpTextField/InpTextField";
 import FormCheckbox from "@/components/share/FormCheckbox/FormCheckBox";
 import CaseActionButton from "@/components/share/CaseActionBtn/CaseActionBtn";
+import { access } from "fs";
+import { headers } from "next/headers";
 
 export interface ILoginPageProps {}
+
+const clientId =
+  "752827926431-6n24u15f6k9al524t0j9hpa2bi24f4f9.apps.googleusercontent.com";
+
+interface UserProfile {
+  access_token: string;
+  // Add other properties as needed
+}
+
+interface IGProfile {
+  id: string;
+  email: string;
+  verified_email: boolean;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+  locale: string;
+}
 
 export default function LoginPage(props: ILoginPageProps) {
   const router = useRouter();
   const validates = messages.validates;
 
+  const [Gprofile, GsetProfile] = useState<IGProfile | null>(null);
   const { profile, setProfile } = useUserProfileContext();
+  const { authenticated, setAuthenticated } = useAuthContext();
+  // const [value, setValue] = useLocalStorage("authStatus","0")
+  // const [authStatus,setAuthStatus] = useState(value)
 
   const formRef = React.useRef(null);
 
@@ -38,6 +73,14 @@ export default function LoginPage(props: ILoginPageProps) {
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+
+  // const saveToLocalStorage = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault()
+  //   setValue(authStatus)
+  // }
+  // const agent = new https.Agent({
+  //   rejectUnauthorized: false,
+  // });
 
   // validate
   const errorUsernameMessage = React.useMemo(() => {
@@ -73,6 +116,89 @@ export default function LoginPage(props: ILoginPageProps) {
       router.push("/");
     }
   };
+
+  // useEffect(() => {
+  //   function start() {
+  //     gapi.client.init({
+  //       clientId: clientId,
+  //       scope: "",
+  //     });
+  //   }
+
+  //   gapi.load("client:auth2", start);
+  // });
+
+  const onSuccess = (res: any) => {
+    console.log("LOGIN SUCCESS! Current user: res");
+    setAuthenticated(true);
+    setProfile({
+      id: res.profileObj.googleId,
+      username: res.profileObj.email,
+      avatarUrl: res.profileObj.imageUrl,
+      name: res.profileObj.name,
+    });
+    router.push("/home");
+  };
+
+  const onFailure = () => {
+    console.log("LOGIN FAILED! res: res");
+  };
+
+  const [user, setUser] = useState<string>();
+
+  const login = useGoogleLogin({
+    onSuccess: ({ access_token }) => {
+      setUser(access_token);
+      // setAuthStatus("1");
+      console.log(access_token);
+    },
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log("LOGIN SUCCESS! Current user: res");
+          GsetProfile(res.data);
+          // saveToLocalStorage;
+        })
+        .catch((err) => console.log(err));
+      console.log("access_token: " + user);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (Gprofile) {
+      setAuthenticated(true);
+      setProfile({
+        id: Gprofile.id,
+        username: Gprofile.email,
+        avatarUrl: Gprofile.picture,
+        name: Gprofile.name,
+      });
+      const postData = async () => {
+        try {
+          const response = await axios.post("/middleware", { authStatus: "1" });
+          console.log("POST request successful:", response.data);
+        } catch (error) {
+          console.error("Error sending POST request:", error);
+        }
+      };
+      console.log("Sending POST Data..")
+      postData();
+      router.push("/home");
+    }
+  }, [Gprofile]);
 
   return (
     <div className="flex align-middle content-center my-[110px] mx-[260px] ">
@@ -111,6 +237,25 @@ export default function LoginPage(props: ILoginPageProps) {
             onClick={onSubmit}
             className="!py-3 !flex-wrap"
           />
+          {/* <div className="self-center">or Sign in with Google</div> */}
+          {/* <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          /> */}
+          <div className="shadow-2xl">
+            <button
+              type="button"
+              className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
+              onClick={() => login()}
+            >
+              <FcGoogle className="mr-4" />
+              Sign in with Google
+            </button>
+          </div>
           <p className="self-center">
             or{" "}
             <a

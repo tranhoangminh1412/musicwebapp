@@ -8,7 +8,7 @@ import IcEye from "@/assets/icons/IcEye";
 export interface IInpTextFieldProps {
   type?: string;
   label?: string;
-  value: string;
+  value?: string;
   onChange: Function;
   placeholder?: string;
   className?: string;
