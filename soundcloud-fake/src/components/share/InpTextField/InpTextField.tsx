@@ -7,7 +7,7 @@ import IcEye from "@/assets/icons/IcEye";
 
 export interface IInpTextFieldProps {
   type?: string;
-  label?: string;
+  field?: string;
   value?: string;
   onChange: Function;
   placeholder?: string;
@@ -18,12 +18,13 @@ export interface IInpTextFieldProps {
   errorMessage?: string;
   autoFocus?: boolean;
   icon?: any;
+  maxLength?: number;
 }
 
 export default function InpTextField(props: IInpTextFieldProps) {
   const {
     type,
-    label,
+    field,
     value,
     onChange = () => {},
     placeholder,
@@ -34,14 +35,17 @@ export default function InpTextField(props: IInpTextFieldProps) {
     errorMessage,
     autoFocus = false,
     icon = "",
+    maxLength,
   } = props;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const [valueLocal, setValueLocal] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
   const [focus, setFocus] = React.useState(false);
   const [state, setState] = React.useState(false);
+  const [textareaCount, setCount] = React.useState(maxLength)
 
   const onFocusInput = () => {
     setFocus(true);
@@ -63,9 +67,21 @@ export default function InpTextField(props: IInpTextFieldProps) {
     emitEvent(e.target.value);
   };
 
+  const onTextAreaValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    (maxLength) && setCount(maxLength - e.target.value.length)
+    setValueLocal(e.target.value);
+    emitEvent(e.target.value);
+  }
+
   React.useEffect(() => {
     if (autoFocus) {
       inputRef.current?.focus();
+    }
+  }, [autoFocus]);
+
+  React.useEffect(() => {
+    if (autoFocus) {
+      textareaRef.current?.focus();
     }
   }, [autoFocus]);
 
@@ -75,13 +91,13 @@ export default function InpTextField(props: IInpTextFieldProps) {
     }
   }, [value]);
 
-  React.useEffect(()=> {
-    if((type == "password") && valueLocal.length < 7){
+  React.useEffect(() => {
+    if (type == "password" && valueLocal.length < 7) {
     }
-  },[])
+  }, []);
 
   return (
-    <div className={`input-textfield w-max min-w-[300px] ${className}`}>
+    <div className={`input-textfield w-max ${className}`}>
       <div
         className={`input-textfield__box flex items-center py-4 relative `}
         style={{ transition: "all .35s ease" }}
@@ -94,17 +110,43 @@ export default function InpTextField(props: IInpTextFieldProps) {
           })}
         <>
           {icon && <Image src={icon} alt="" className="mr-[24px]" />}
-          <input
-            type={type === "password" && !showPassword ? "password" : "text"}
-            ref={inputRef}
-            value={valueLocal}
-            placeholder={placeholder}
-            className="text-grey bg-transparent border-none outline-none text-sm"
-            style={{ flex: 1 }}
-            onChange={onValueChange}
-            onFocus={onFocusInput}
-            onBlur={onBlurInput}
-          />
+          {field ? (
+            <>
+            {
+              maxLength && <div className="absolute top-0 right-0 text-[10px] leading-[15px] w-[19px] h-[15px]">{textareaCount?.toString()}</div>
+            }
+            <textarea
+              ref={textareaRef}
+              placeholder={placeholder}
+              value={valueLocal}
+              className={
+                "text-gray bg-transparent border-[#DCDCDC] border rounded outline-none text-sm py-2 pl-1 w-full h-[82px]"
+              }
+              style={{ flex: 1 }}
+              onChange={onTextAreaValueChange}
+              onFocus={onFocusInput}
+              onBlur={onBlurInput}
+              maxLength={maxLength}
+            />
+            </>
+          ) : (
+            <input
+              type={type === "password" && !showPassword ? "password" : "text"}
+              ref={inputRef}
+              value={valueLocal}
+              placeholder={placeholder}
+              className={
+                type != "full"
+                  ? "text-gray bg-transparent border-none outline-none text-sm"
+                  : "text-gray bg-transparent border-[#DCDCDC] border rounded outline-none text-sm py-2 pl-1 w-full"
+              }
+              style={{ flex: 1 }}
+              onChange={onValueChange}
+              onFocus={onFocusInput}
+              onBlur={onBlurInput}
+            />
+          )}
+
           {type === "password" && (
             <IcEye
               show={showPassword}
@@ -115,17 +157,21 @@ export default function InpTextField(props: IInpTextFieldProps) {
             />
           )}
         </>
+        {type != "full" ? (
+          <div
+            className={`absolute h-[1px] w-full left-0 bottom-0 ${
+              focus
+                ? "bg-[#0094FF]"
+                : error && state
+                ? "bg-[#ee5253]"
+                : `bg-[#757185]`
+            }`}
+            style={{ transition: "all .35s ease" }}
+          ></div>
+        ) : (
+          <></>
+        )}
 
-        <div
-          className={`absolute h-[1px] w-full left-0 bottom-0 ${
-            focus
-              ? "bg-[#0094FF]"
-              : error && state
-              ? "bg-[#ee5253]"
-              : `bg-[#757185]`
-          }`}
-          style={{ transition: "all .35s ease" }}
-        ></div>
         {error && state ? (
           <p
             className="absolute h-[1px] w-full left-0 bottom-0 text-[10px] leading-[15px] text-[#ee5253]"
@@ -133,7 +179,9 @@ export default function InpTextField(props: IInpTextFieldProps) {
           >
             Invalid field
           </p>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

@@ -1,0 +1,1 @@
+export const genres = ["rock","hip-hop","ballad","lofi","pop"]
