@@ -12,6 +12,7 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "songSearchBg":"url('../assets/app/searchSongsBg.png')"
       },
       colors: {
         'btnTextWhite': '#E9E9E9',

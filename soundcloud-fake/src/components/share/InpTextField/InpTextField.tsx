@@ -9,7 +9,7 @@ export interface IInpTextFieldProps {
   type?: string;
   field?: string;
   value?: string;
-  onChange: Function;
+  onChange: any;
   placeholder?: string;
   className?: string;
   debounce?: number;
@@ -19,6 +19,7 @@ export interface IInpTextFieldProps {
   autoFocus?: boolean;
   icon?: any;
   maxLength?: number;
+  setParentInput?: any;
 }
 
 export default function InpTextField(props: IInpTextFieldProps) {
@@ -36,6 +37,7 @@ export default function InpTextField(props: IInpTextFieldProps) {
     autoFocus = false,
     icon = "",
     maxLength,
+    setParentInput,
   } = props;
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -64,13 +66,15 @@ export default function InpTextField(props: IInpTextFieldProps) {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setValueLocal(e.target.value);
-    emitEvent(e.target.value);
+    // emitEvent(e.target.value);
+    onChange(e.target.value)
   };
 
   const onTextAreaValueChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     (maxLength) && setCount(maxLength - e.target.value.length)
     setValueLocal(e.target.value);
-    emitEvent(e.target.value);
+    // emitEvent(e.target.value);
+    onChange(e.target.value)
   }
 
   React.useEffect(() => {
@@ -120,7 +124,7 @@ export default function InpTextField(props: IInpTextFieldProps) {
               placeholder={placeholder}
               value={valueLocal}
               className={
-                "text-gray bg-transparent border-[#DCDCDC] border rounded outline-none text-sm py-2 pl-1 w-full h-[82px]"
+                "text-gray bg-transparent border-[#DCDCDC] border rounded outline-none text-sm py-2 pl-1 w-full min-h-16"
               }
               style={{ flex: 1 }}
               onChange={onTextAreaValueChange}
