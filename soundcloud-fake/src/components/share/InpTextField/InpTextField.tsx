@@ -101,7 +101,7 @@ export default function InpTextField(props: IInpTextFieldProps) {
   }, []);
 
   return (
-    <div className={`input-textfield w-max ${className}`}>
+    <div className={`input-textfield w-full ${className}`}>
       <div
         className={`input-textfield__box flex items-center py-4 relative `}
         style={{ transition: "all .35s ease" }}
