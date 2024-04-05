@@ -7,6 +7,6 @@ export interface PlaylistInfo {
     genre?: string;
     artist?: string;
     description?: string;
-    songs: ISong[];
+    songs: number[];
     img: StaticImageData;
 }

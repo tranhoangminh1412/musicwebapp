@@ -21,7 +21,7 @@ export interface ICreatePlaylist1Props {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   updatePlaylistInfo: (
     key: keyof PlaylistInfo,
-    value: string | string[]
+    value: string | number[] | StaticImageData
   ) => void;
   playlistInfo: PlaylistInfo;
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 import InpTextField from "../share/InpTextField/InpTextField";
 import CaseActionButton from "../share/CaseActionBtn/CaseActionBtn";
@@ -10,34 +10,41 @@ import { songs } from "@/constants/songs.constant";
 import PlaylistSongShowcase from "./PlaylistSongShowcase";
 import { ISong } from "@/types/ISong";
 import { PlaylistInfo } from "@/types/IPlaylistInfo";
+import { playlists } from "@/constants/playlists.constant";
+import { IPlaylist } from "@/types/IPlaylist";
 
 export interface ICreatePlaylist2Props {
-  setList: React.Dispatch<React.SetStateAction<ISong[] | undefined>>;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  updatePlaylistInfo: (key: keyof PlaylistInfo, value: string | string[]) => void;
+  updatePlaylistInfo: (
+    key: keyof PlaylistInfo,
+    value: string | number[] | StaticImageData
+  ) => void;
+  playlistInfo: PlaylistInfo;
 }
 
+let finalSongList: number[] = [];
+
+
 export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
-  const { setList, setPage, updatePlaylistInfo } = props;
+  const { setPage, updatePlaylistInfo, playlistInfo } = props;
 
   const [showDropdown, setShowDropdown] = React.useState(true);
   const [selectedSong, setSelectedSong] = React.useState<ISong>();
   const [searchInput, setSearchInput] = React.useState<string>();
   const [songList, setSongList] = React.useState([...songs]);
   const [error, setError] = React.useState(false);
-  let finalSongList: ISong[] = [];
 
   React.useEffect(() => {
-    let i = finalSongList.findIndex((song) => song == selectedSong);
+    let i = finalSongList.findIndex((song) => song == selectedSong?.id);
     if (i != -1) {
       finalSongList.splice(i, 1);
     } else {
-      selectedSong && finalSongList.push(selectedSong);
+      selectedSong && finalSongList.push(selectedSong.id);
     }
+    console.log(finalSongList)
   }, [selectedSong]);
 
   React.useEffect(() => {
-    console.log("matching... searchInput changed");
     if (searchInput) {
       const matchItems = songs.filter((item) =>
         item.name.toLowerCase().includes(searchInput.toLowerCase())
@@ -54,10 +61,27 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
     } else return false;
   };
 
+  let formattedNewPlaylist: IPlaylist;
+
+  const convertFormatNewPlaylist = () => {
+    formattedNewPlaylist = {
+      id: playlists[playlists.length-1].id + 1,
+      name: playlistInfo.title,
+      genre: playlistInfo.genre,
+      songs: [...finalSongList],
+      image: playlistInfo.img,
+      artist: playlistInfo.artist,
+      slug: playlistInfo.slug,
+    };
+    return formattedNewPlaylist;
+  };
+
   const saveSelectedSongs = () => {
     if (checkSongList()) {
-      setList([...finalSongList]);
+      updatePlaylistInfo("songs", [...finalSongList]);
       setPage(3);
+      playlists.push(convertFormatNewPlaylist());
+      finalSongList.splice(0,finalSongList.length)
     } else {
       setError(true);
     }
@@ -81,15 +105,18 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
           {songList.map((song, index) => (
             <PlaylistSongShowcase
               key={index}
+              selectedSong={selectedSong}
               setSelectedSong={setSelectedSong}
               song={song}
             />
           ))}
         </div>
       )}
-      {error && <div className="absolute left-7 bottom-6 flex items-center size-[10px] leading-[15px] text-nowrap text-[10px]">
-        <p className="text-[#FF4040]">Select at least one song</p>
-      </div>}
+      {error && (
+        <div className="absolute left-7 bottom-6 flex items-center size-[10px] leading-[15px] text-nowrap text-[10px]">
+          <p className="text-[#FF4040]">Select at least one song</p>
+        </div>
+      )}
       <div className="absolute flex items-center bottom-[18px] right-[24px]">
         <div className=" ml-auto flex gap-2">
           <CaseActionButton

@@ -3,7 +3,9 @@ import HoangDung from '@/assets/images/NangTho.jpeg'
 import VoiBanDon from '@/assets/images/rain.jpeg'
 import BuiAnhTuan from '@/assets/images/BuiAnhTuan.jpeg'
 
-export const playlists = [
+import { IPlaylist } from '@/types/IPlaylist'
+
+export const playlists : IPlaylist[] = [
     {
         id: 0,
         name: "Playlist 1",

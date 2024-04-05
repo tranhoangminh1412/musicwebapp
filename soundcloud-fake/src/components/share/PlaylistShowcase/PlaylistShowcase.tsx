@@ -17,21 +17,22 @@ export default function PlaylistShowcase(props: IPlaylistShowcaseProps) {
 
   return (
     <div className="relative">
-    <div className="absolute inset-0 bg-black opacity-70"></div>
-    <div className="rounded-[4px] p-6 gap-6 flex bg-center items-center bg-cover bg-[url(../assets/images/rain.jpeg)]">
-      <Image
-        style={{ objectFit: "cover" }}
-        className="size-[200px] p-[10px] gap-[10px] z-10"
-        src={playlist.image}
-        alt=""
-      />
-      <IcPlayCircleFilled classes="absolute z-20 top-[34%] left-[9.6%] cursor-pointer" />
+      <div className="absolute inset-0 bg-black opacity-70"></div>
+      <div className="rounded-[4px] p-6 gap-6 flex bg-center items-center bg-cover bg-[url(../assets/images/rain.jpeg)] text-white">
+        <Image
+          style={{ objectFit: "cover" }}
+          className="size-[200px] p-[10px] gap-[10px] z-10"
+          src={playlist.image}
+          alt=""
+        />
+        <IcPlayCircleFilled classes="absolute z-20 top-[34%] left-[9.6%] cursor-pointer" />
         <div className="overflow-y-auto h-full w-full z-20">
-            {playlist.songs.map(function (data) {
-                return <PlaylistShowcaseItem songId={data} />
-            })}
+          <div className="text-white font-medium z-30 text-nowrap">{playlist.name}</div>
+          {playlist.songs.map(function (data) {
+            return <PlaylistShowcaseItem songId={data} />;
+          })}
         </div>
-    </div>
+      </div>
     </div>
   );
 }

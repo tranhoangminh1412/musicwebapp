@@ -9,25 +9,17 @@ import CreatePlaylist1 from "@/components/pages/CreatePlaylist1";
 import CreatePlaylist2 from "@/components/pages/CreatePlaylist2";
 import CreatePlaylist3 from "@/components/pages/CreatePlaylist3";
 import { ISong } from "@/types/ISong";
+import { PlaylistInfo } from "@/types/IPlaylistInfo";
+
 
 import defaultPlaylistCover from "@/assets/app/defaultPlaylistCover.png";
 
 export interface ICreatePlaylistProps {}
 
-interface PlaylistInfo {
-  title: string;
-  slug: string;
-  genre: string;
-  artist: string;
-  description: string;
-  songs: ISong[];
-  img: StaticImageData;
-}
 
 export default function CreatePlaylist(props: ICreatePlaylistProps) {
   const [page, setPage] = useState(1);
-  const [list, setList] = useState<ISong[]>();
-  const [playlistInfo, setPlaylistInfo] = useState({
+  const [playlistInfo, setPlaylistInfo] = useState<PlaylistInfo>({
     title: "",
     slug: "",
     genre: "",
@@ -39,7 +31,7 @@ export default function CreatePlaylist(props: ICreatePlaylistProps) {
 
   const updatePlaylistInfo = (
     key: keyof PlaylistInfo,
-    value: string | string[]
+    value: string | number[] | StaticImageData
   ) => {
     setPlaylistInfo((prevState) => ({
       ...prevState,
@@ -71,9 +63,9 @@ export default function CreatePlaylist(props: ICreatePlaylistProps) {
             />
           ) : page == 2 ? (
             <CreatePlaylist2
-              setList={setList}
               setPage={setPage}
               updatePlaylistInfo={updatePlaylistInfo}
+              playlistInfo={playlistInfo}
             />
           ) : page == 3 ? (
             <CreatePlaylist3

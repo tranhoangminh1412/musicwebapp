@@ -15,3 +15,11 @@
 .overflow-x-auto::-webkit-scrollbar {
   display: none;
 }
+
+@layer components {
+  .control-button {
+    @apply
+      bg-[#DCDCDC] rounded-full p-4
+      
+  }
+}

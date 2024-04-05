@@ -13,7 +13,10 @@ import copy from '@/assets/app/copy.svg'
 
 export interface ICreatePlaylist3Props {
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  updatePlaylistInfo: (key: keyof PlaylistInfo, value: string | string[]) => void;
+  updatePlaylistInfo: (
+    key: keyof PlaylistInfo,
+    value: string | number[] | StaticImageData
+  ) => void;
   playlistInfo: PlaylistInfo;
 }
 
