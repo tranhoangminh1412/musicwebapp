@@ -12,6 +12,8 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [0,1],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
+        description: "HI this is a really long one iDONTTT KNOW HOW YOU CAN FIT ALL OF THIS IN A CONTAINER, YOU MUST USE HIDDEN AND ALL OF THE OTHER ONES TO TAKE THIS BACK A NOTCH THIS IS VERY BAD UI AND WILL MAKE YOUR APPLICATION LOOK LIKE ABSOLUTE HORSE SHIT HORSE SHIT HORSE SHIT SHORSE SHIT HORSE SHIT HORSE SHIT HORSE SHIT HORSE SHIHT"
     },
     {
         id: 1,
@@ -19,6 +21,7 @@ export const playlists : IPlaylist[] = [
         genre: "Rock",
         songs: [2,3],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 2,
@@ -26,6 +29,7 @@ export const playlists : IPlaylist[] = [
         genre: "Rock",
         songs: [4,5],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 3,
@@ -33,6 +37,7 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [6,7],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 4,
@@ -40,6 +45,7 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [8,9],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 5,
@@ -47,6 +53,7 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [10,11],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 6,
@@ -54,6 +61,7 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [12,13],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 7,
@@ -61,6 +69,7 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [0,1],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
     {
         id: 8,
@@ -68,5 +77,6 @@ export const playlists : IPlaylist[] = [
         genre: "Pop ballad",
         songs: [0,1],
         image: VoiBanDon,
+        author: "tranhoangminh1412",
     },
 ]

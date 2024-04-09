@@ -26,12 +26,12 @@ export default function SongViewShowcase(props: ISongViewShowcaseProps) {
   return (
     <div className="relative">
       <div className="absolute inset-0 bg-black opacity-90 z-10"></div>
-      <div className="rounded-[4px] p-6 gap-6 flex bg-center items-center bg-cover bg-[url(../assets/images/rain.jpeg)] text-white z-20">
+      <div className="rounded-[4px] gap-6 flex bg-center items-center bg-cover bg-[url(../assets/images/rain.jpeg)] text-white z-20">
         <div className="relative z-20 w-full">
-          <div className="flex items-center gap-6">
+          <div className="flex items-start gap-6 p-4">
             <Image
               style={{ objectFit: "cover" }}
-              className="size-[98px] rounded-[4px] p-[10px] gap-[10px] z-20"
+              className="size-[98px] rounded-[4px] gap-[10px] z-20"
               src={song.image}
               alt=""
             />
@@ -44,8 +44,20 @@ export default function SongViewShowcase(props: ISongViewShowcaseProps) {
               </div>
             </div>
           </div>
-          <Slider classes="h-[6px] " />
-          <div className="flex gap-6 items-center z-30">WHERE ARE YOU</div>
+          <Slider inputClasses="h-[6px] " size="L" />
+          <div className="flex gap-6 items-center z-30 py-[10px] px-4">
+            <Image src={arrowLeft} alt="" />
+            <Image src={play} alt="" />
+            <Image src={arrowRight} alt="" />
+            <Image src={repeat} alt="" />
+            <div className="flex gap-2 w-[100px] items-center">
+              <Image className="size-[20px]" src={volume} alt="" />
+              <Slider inputClasses="!h-[4px]" progressSliderClasses="!h-[4px]" rounded={true} size="M" />
+            </div>
+            <div className="flex text-xs leading-[18px] text-white">
+              00:47 <p className="text-[#979797]"> / 05:32</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

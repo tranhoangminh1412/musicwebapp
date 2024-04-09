@@ -9,7 +9,7 @@ export const users = [
     },
     {
         id: 1,
-        name: 'Minh Tran',
+        name: 'Minh Tran 1',
         username: 'minhtran1412',
         password: '123456',
         favSongs: [3,4,5],
@@ -17,7 +17,7 @@ export const users = [
     },
     {
         id: 2,
-        name: 'Minh Tran',
+        name: 'Minh Tran 2',
         username: 'minhtran1412',
         password: '123456',
         favSongs: [6,7,8],
@@ -25,7 +25,7 @@ export const users = [
     },
     {
         id: 3,
-        name: 'Minh Tran',
+        name: 'Minh Tran 3',
         username: 'minhtran1412',
         password: '123456',
         favSongs: [6,7,8],

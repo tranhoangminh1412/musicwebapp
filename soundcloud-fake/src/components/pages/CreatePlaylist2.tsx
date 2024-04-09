@@ -124,6 +124,7 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
             text="Back"
             textClasses="!text-black text-[10px] leading-[15px]"
             onClick={() => setPage(1)}
+            color="white"
           />
           <CaseActionButton
             className="!max-w-fit !max-h-fit"

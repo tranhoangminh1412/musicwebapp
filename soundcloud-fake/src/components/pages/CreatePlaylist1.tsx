@@ -163,6 +163,7 @@ export default function CreatePlaylist1(props: ICreatePlaylist1Props) {
             text="Cancel"
             textClasses="!text-black text-[10px] leading-[15px]"
             onClick={() => router.push("/home")}
+            color="white"
           />
           <CaseActionButton
             className="!max-w-fit !max-h-fit"

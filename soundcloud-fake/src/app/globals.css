@@ -17,9 +17,79 @@
 }
 
 @layer components {
-  .control-button {
-    @apply
-      bg-[#DCDCDC] rounded-full p-4
-      
+  .slider ::-webkit-slider-thumb {
+    @apply appearance-none
+      w-4 h-4
+      active:w-5 active:h-5
+      rounded-full
+      transition-all duration-150
+      cursor-pointer;
   }
+}
+
+.sliderL::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+  background-color: #ff6b00;
+}
+.sliderL::-webkit-slider-thumb:hover {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+}
+
+.sliderM::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+  background-color: #ff6b00;
+}
+.sliderM::-webkit-slider-thumb:hover {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+}
+
+.sliderS::-webkit-slider-thumb {
+  appearance: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
+  background-color: #ff6b00;
+}
+
+.sliderS::-webkit-slider-thumb:hover {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  cursor: pointer;
 }

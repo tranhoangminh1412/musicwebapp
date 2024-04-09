@@ -8,4 +8,6 @@ export type IPlaylist = {
   image: StaticImageData,
   artist?: string,
   slug?: string,
+  author: string,
+  description?: string,
 };
