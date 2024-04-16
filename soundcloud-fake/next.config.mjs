@@ -10,6 +10,9 @@ const nextConfig = {
     ],
     domains: ['lh3.googleusercontent.com'],
   },
+  env: {
+    AUTH_SECRET : process.env.AUTH_SECRET
+  },
 };
 
 export default nextConfig;

@@ -11,6 +11,9 @@ import CaseActionButton from "../share/CaseActionBtn/CaseActionBtn";
 import InpTextField from "../share/InpTextField/InpTextField";
 import Comment from "../share/Comment/Comment";
 import ListPages from "../share/ListPages/ListPages";
+import { generateAuthToken } from "@/utils/auth";
+
+generateAuthToken('0');
 
 export interface ISongViewCommentsProps {
   playlist: IPlaylist;

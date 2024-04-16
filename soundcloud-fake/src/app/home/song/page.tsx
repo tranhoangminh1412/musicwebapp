@@ -10,7 +10,7 @@ import { playlists } from "@/constants/playlists.constant";
 import SongViewShowcase from "@/components/share/SongShowcase/SongViewShowcase";
 import SongViewInfo from "@/components/pages/SongViewInfo";
 import SongShowcase from "@/components/pages/SongShowcase";
-import SongViewAction from "@/components/share/SongViewAction/songViewAction";
+import SongViewAction from "@/components/share/SongViewAction/SongViewAction";
 import { IPlaylist } from "@/types/IPlaylist";
 
 export interface ISongViewProps {
