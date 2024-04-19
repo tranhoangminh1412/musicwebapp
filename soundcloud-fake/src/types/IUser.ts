@@ -3,5 +3,7 @@ export type IUser = {
     name?: string;
     username: string;
     password?: string;
+    favSongs?: number[];
+    favPlaylists?: number[];
     avatarUrl?: string;
 };

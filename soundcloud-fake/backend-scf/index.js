@@ -1,11 +1,44 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const path = require("node:path");
 const PORT = 3000;
 const next = require("next"); // Include module next
 const cors = require("cors");
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
+
+const users = require('../src/constants/users.constant')
+
+let sql;
+
+console.log(__dirname);
+
+const db = new sqlite3.Database(
+  __dirname + "/test.db",
+  sqlite3.OPEN_READWRITE,
+  (err) => {
+    if (err) return console.log(err);
+  }
+);
+
+sql = `CREATE TABLE users(id INTEGER PRIMARY KEY,name,username,password,favSongs,favPlaylists,avatarUrl)`;
+db.run(sql);
+
+const cols = users.keys(values).join(", ");
+const placeholders = users.keys(values).fill("?").join(", ");
+db.run(
+  "INSERT INTO users (" + cols + ") VALUES (" + placeholders + ")",
+  users.values(values)
+),
+  (err) => {
+    console.log(err);
+  };
+
+// sql = `INSERT INTO users(name,username,password,avatarUrl) VALUES(?,?,?,?)`
+// db.run(sql,["fredson","fred","test","hisAvatarUrl"],(err)=>{
+//     if (err) return console.error(err.message)
+// })
 
 app.prepare().then(() => {
   const server = express();
@@ -29,21 +62,7 @@ app.prepare().then(() => {
   });
 });
 
-let sql;
-
-const db = new sqlite3.Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
-  if (err) return console.log("error");
-});
-
-// sql = `CREATE TABLE users(id INTEGER PRIMARY KEY,first_name,last_name,username,password,email)`;
-// db.run(sql);
-
 // db.run("DROP TABLE users");
-
-// sql = `INSERT INTO users(first_name,last_name,username,password,email) VALUES(?,?,?,?,?)`
-// db.run(sql,["fred","fredson","fred","test","fred@gmail.com"],(err)=>{
-//     if (err) return console.error(err.message)
-// })
 
 //update the data
 // sql = `UPDATE users SET first_name = ? WHERE id = ?`;
@@ -51,20 +70,20 @@ const db = new sqlite3.Database("./test.db", sqlite3.OPEN_READWRITE, (err) => {
 //   if (err) return console.error(err.message);
 // });
 
-//Delete data
+// Delete data
 // sql = `DELETE FROM users WHERE id = ?`;
-// db.run(sql, [1], (err) => {
+// db.run(sql, [3], (err) => {
 //   if (err) return console.error(err.message);
 // });
 
-// //query the data
-// sql = `SELECT * FROM users`;
-// db.all(sql, [], (err, rows) => {
-//   if (err) return console.error(err.message);
-//   rows.forEach((row) => {
-//     console.log(row);
-//   });
-// });
+//query the data
+sql = `SELECT * FROM users`;
+db.all(sql, [], (err, rows) => {
+  if (err) return console.error(err.message);
+  rows.forEach((row) => {
+    console.log(row);
+  });
+});
 
 // app.use(express.json());
 

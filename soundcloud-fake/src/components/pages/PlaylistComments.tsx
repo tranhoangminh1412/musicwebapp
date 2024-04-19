@@ -13,7 +13,7 @@ import Comment from "../share/Comment/Comment";
 import ListPages from "../share/ListPages/ListPages";
 import { generateAuthToken } from "@/utils/auth";
 
-generateAuthToken('0');
+generateAuthToken("0");
 
 export interface ISongViewCommentsProps {
   playlist: IPlaylist;
@@ -27,6 +27,7 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
   const [input, setInput] = React.useState("");
   const [currentPage, setCurrentPage] = React.useState(1);
   const [error, setError] = React.useState(false);
+  const [message, setMessage] = React.useState("Loading..");
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (
@@ -42,13 +43,13 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
         authorId: 0,
         content: input,
       });
-      console.log("why")
+      console.log("why");
       setInput("");
     }
   };
 
   React.useEffect(() => {
-    console.log("useeffect songView inputVal : " + input)
+    console.log("useeffect songView inputVal : " + input);
     if (input.length > 250) {
       setError(true);
     } else {
@@ -80,9 +81,19 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
     </svg>
   );
 
+//   React.useEffect(() => {
+//     fetch("http://localhost:3000/api/home")
+//       .then((response) => response.json())
+//       .then((data) => {
+//         console.log(data);
+//         setMessage(data.message);
+//       });
+//   }, []);
+
   return (
     <>
       <div className="flex items-center w-full h-38px">
+        {/* {message} */}
         <div className="text-[#979797] text-xs leading-[18px] flex-grow flex items-center">
           <Image className="size-3" src={commentSVG} alt="" /> &nbsp;
           {comments[playlist.id].contents.length} comments

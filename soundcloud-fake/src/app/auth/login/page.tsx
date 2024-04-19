@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { useUserProfileContext } from "@/contexts/ProfileContext";
 import { useAuthContext } from "@/contexts/AuthContext";
 // import useLocalStorage from "@/hooks/useLocalStorage"
+import { useLocalStorage } from "usehooks-ts";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -73,6 +74,7 @@ export default function LoginPage(props: ILoginPageProps) {
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [token, setToken] = useLocalStorage("scf_token", "");
 
   // const saveToLocalStorage = (e: { preventDefault: () => void; }) => {
   //   e.preventDefault()
@@ -199,6 +201,11 @@ export default function LoginPage(props: ILoginPageProps) {
       router.push("/home");
     }
   }, [Gprofile]);
+
+  React.useEffect(() => {
+    setToken("");
+    setProfile(null);
+  }, []);
 
   return (
     <div className="flex align-middle content-center my-[110px] mx-[260px] ">
