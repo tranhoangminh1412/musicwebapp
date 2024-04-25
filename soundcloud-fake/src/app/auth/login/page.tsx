@@ -74,12 +74,10 @@ export default function LoginPage(props: ILoginPageProps) {
 
   const formRef = React.useRef(null);
 
-  const [username, setUsername] = React.useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-  const [token, setToken] = useLocalStorage("scf_token", "");
 
   // const saveToLocalStorage = (e: { preventDefault: () => void; }) => {
   //   e.preventDefault()
@@ -128,94 +126,6 @@ export default function LoginPage(props: ILoginPageProps) {
     }
   };
 
-  // useEffect(() => {
-  //   function start() {
-  //     gapi.client.init({
-  //       clientId: clientId,
-  //       scope: "",
-  //     });
-  //   }
-
-  //   gapi.load("client:auth2", start);
-  // });
-
-  const onSuccess = (res: any) => {
-    console.log("LOGIN SUCCESS! Current user: res");
-    setAuthenticated(true);
-    setProfile({
-      id: res.profileObj.googleId,
-      username: res.profileObj.email,
-      avatarUrl: res.profileObj.imageUrl,
-      name: res.profileObj.name,
-    });
-    router.push("/home");
-  };
-
-  const onFailure = () => {
-    console.log("LOGIN FAILED! res: res");
-  };
-
-  const [user, setUser] = useState<string>();
-
-  const login = useGoogleLogin({
-    onSuccess: ({ access_token }) => {
-      setUser(access_token);
-      // setAuthStatus("1");
-      console.log(access_token);
-    },
-    onError: (error) => console.log("Login Failed:", error),
-  });
-
-  useEffect(() => {
-    if (user) {
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user}`,
-          {
-            headers: {
-              Authorization: `Bearer ${user}`,
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log("LOGIN SUCCESS! Current user: res");
-          GsetProfile(res.data);
-          // saveToLocalStorage;
-        })
-        .catch((err) => console.log(err));
-      console.log("access_token: " + user);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (Gprofile) {
-      setAuthenticated(true);
-      setProfile({
-        id: Gprofile.id,
-        username: Gprofile.email,
-        avatarUrl: Gprofile.picture,
-        name: Gprofile.name,
-      });
-      const postData = async () => {
-        try {
-          const response = await axios.post("/middleware", { authStatus: "1" });
-          console.log("POST request successful:", response.data);
-        } catch (error) {
-          console.error("Error sending POST request:", error);
-        }
-      };
-      console.log("Sending POST Data..");
-      postData();
-      router.push("/home");
-    }
-  }, [Gprofile]);
-
-  React.useEffect(() => {
-    setToken("");
-    setProfile(null);
-  }, []);
-
   return (
     <div className="flex align-middle content-center my-[110px] mx-[260px] ">
       <div className="flex align-middle content-center gap-6 ">
@@ -262,7 +172,7 @@ export default function LoginPage(props: ILoginPageProps) {
               console.log("Login Failed");
             }}
           /> */}
-          <div className="shadow-2xl">
+          {/* <div className="shadow-2xl">
             <button
               type="button"
               className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
@@ -271,7 +181,7 @@ export default function LoginPage(props: ILoginPageProps) {
               <FcGoogle className="mr-4" />
               Sign in with Google
             </button>
-          </div>
+          </div> */}
           <p className="self-center">
             or{" "}
             <a
