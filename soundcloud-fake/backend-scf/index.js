@@ -1,5 +1,5 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
+// const sqlite3 = require("sqlite3").verbose();
 const path = require("node:path");
 const PORT = 3000;
 const next = require("next"); // Include module next
@@ -8,32 +8,32 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const users = require('../src/constants/users.constant')
+const users = require('./data')
 
-let sql;
+// let sql;
 
-console.log(__dirname);
+// console.log(__dirname);
 
-const db = new sqlite3.Database(
-  __dirname + "/test.db",
-  sqlite3.OPEN_READWRITE,
-  (err) => {
-    if (err) return console.log(err);
-  }
-);
+// const db = new sqlite3.Database(
+//   __dirname + "/test.db",
+//   sqlite3.OPEN_READWRITE,
+//   (err) => {
+//     if (err) return console.log(err);
+//   }
+// );
 
-sql = `CREATE TABLE users(id INTEGER PRIMARY KEY,name,username,password,favSongs,favPlaylists,avatarUrl)`;
-db.run(sql);
+// sql = `CREATE TABLE users(id INTEGER PRIMARY KEY,name,username,password,favSongs,favPlaylists,avatarUrl)`;
+// db.run(sql);
 
-const cols = users.keys(values).join(", ");
-const placeholders = users.keys(values).fill("?").join(", ");
-db.run(
-  "INSERT INTO users (" + cols + ") VALUES (" + placeholders + ")",
-  users.values(values)
-),
-  (err) => {
-    console.log(err);
-  };
+// const cols = users.keys(values).join(", ");
+// const placeholders = users.keys(values).fill("?").join(", ");
+// db.run(
+//   "INSERT INTO users (" + cols + ") VALUES (" + placeholders + ")",
+//   users.values(values)
+// ),
+//   (err) => {
+//     console.log(err);
+//   };
 
 // sql = `INSERT INTO users(name,username,password,avatarUrl) VALUES(?,?,?,?)`
 // db.run(sql,["fredson","fred","test","hisAvatarUrl"],(err)=>{
@@ -43,12 +43,28 @@ db.run(
 app.prepare().then(() => {
   const server = express();
 
+  const users = require('./routes/users')
+  const songs = require('./routes/songs')
+  const comments = require('./routes/comments')
+  const genres = require('./routes/genres')
+  const playlists = require('./routes/playlists')
+  const artists = require('./routes/artists')
+
   server.use(cors());
+  server.use(express.urlencoded({extended:false}))
+  server.use(express.json())
 
   //Tạo ra các router. Dòng này có ý nghĩa khi gửi request đến path /a . Sẽ render file /a.js trong thư mục pages/a.js của Nextjs
   server.get("/api/home", (req, res) => {
     res.json({ message: "Hello World!" });
   });
+
+  server.use('/api/users',users)
+  server.use('/api/songs',songs)
+  server.use('/api/comments',comments)
+  server.use('/api/genres',genres)
+  server.use('/api/playlists',playlists)
+  server.use('/api/artists',artists)
 
   // Nếu các bạn muốn các routing tự động liến kết đến route files giống với cấu trúc của Nextjs thì chỉ cần thêm 3 dòng bên dưới
   // https://nextjs.org/docs/routing/introduction
@@ -77,13 +93,13 @@ app.prepare().then(() => {
 // });
 
 //query the data
-sql = `SELECT * FROM users`;
-db.all(sql, [], (err, rows) => {
-  if (err) return console.error(err.message);
-  rows.forEach((row) => {
-    console.log(row);
-  });
-});
+// sql = `SELECT * FROM users`;
+// db.all(sql, [], (err, rows) => {
+//   if (err) return console.error(err.message);
+//   rows.forEach((row) => {
+//     console.log(row);
+//   });
+// });
 
 // app.use(express.json());
 

@@ -66,7 +66,7 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
 
   return (
     <header
-      className={`sticky top-0 px-10 flex items-center z-[12] h-[80px] bg-[#2B2B2B] justify-center gap-[200px] ${className}`}
+      className={`sticky top-0 px-10 flex items-center z-[100] h-[80px] bg-[#2B2B2B] justify-center gap-[200px] ${className}`}
       suppressHydrationWarning={true}
     >
       <Link onClick={() => router.push("/")} href="/">

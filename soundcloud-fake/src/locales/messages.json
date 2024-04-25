@@ -5,6 +5,7 @@
       "search": "Tìm kiếm"
     },
     "validates": {
+      "invalid_email":"Invalid Email",
       "invalid_username": "Username must be at least 6 characters",
       "username_not_found": "Username not found",
       "username_no_space": "Username must not include spaces",

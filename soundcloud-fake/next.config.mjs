@@ -7,8 +7,13 @@ const nextConfig = {
         hostname: "lh3.googleusercontent.com",
         port: "3000",
       },
+      {
+        protocol:'https',
+        hostname:"firebasestorage.googleapis.com",
+        port: "3000",
+      }
     ],
-    domains: ['lh3.googleusercontent.com'],
+    domains: ['lh3.googleusercontent.com','firebasestorage.googleapis.com'],
   },
   env: {
     AUTH_SECRET : process.env.AUTH_SECRET

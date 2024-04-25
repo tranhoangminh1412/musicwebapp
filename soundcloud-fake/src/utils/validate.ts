@@ -7,8 +7,21 @@ export const validateRequired = (name: string, value: any, validates: any) => {
 export const validateUsername = (value: string, validates: any) => {
   let message = "";
   const regex = /\s/;
-  if (value.length<6) message = validates.invalid_username;
-  else if(regex.test(value)) message = validates.username_no_space;
+  if (value.length < 6) message = validates.invalid_username;
+  else if (regex.test(value)) message = validates.username_no_space;
+  else if (value.length == 0) message = "username" + validates.required;
+  return message;
+};
+
+export const validateEmail = (value: string, validates: any) => {
+  let message = "";
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (value.length === 0) {
+    message = "Email" + validates.required;
+  } else if (!emailRegex.test(value)) {
+    message = validates.invalid_email;
+  }
   return message;
 };
 

@@ -5,7 +5,7 @@ export type IPlaylist = {
   name: string,
   genre?: string,
   songs: number[],
-  image: StaticImageData,
+  image: string | StaticImageData,
   artist?: string,
   slug?: string,
   author: string,

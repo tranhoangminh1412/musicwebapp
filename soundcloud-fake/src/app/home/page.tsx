@@ -6,6 +6,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+import axios from "axios";
+
 import btnLeft from "@/assets/app/btn-left.svg";
 import btnRight from "@/assets/app/btn-right.svg";
 
@@ -13,18 +15,20 @@ import { orderedPopularPlaylist } from "@/utils/orderPopularPlaylists";
 import { orderedPopularArtists } from "@/utils/orderPopularArtist";
 
 import { songs } from "@/constants/songs.constant";
-import { playlists } from "@/constants/playlists.constant";
 
 import TopArtist from "@/components/pages/TopArtist";
 import SongShowcase from "@/components/pages/SongShowcase";
 import ListPages from "@/components/share/ListPages/ListPages";
 import PlaylistShowcase from "@/components/share/PlaylistShowcase/PlaylistShowcase";
 import TopPlaylistAuthorContainer from "@/components/pages/TopPlaylistAuthorContainer";
+import { IPlaylist } from "@/types/IPlaylist";
+import { IResPlaylist } from "@/types/res.type";
 
 export interface IHomeProps {}
 
 export default function Home(props: IHomeProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
 
   let showSongIndex: number = 0;
   let maxSongShowcase = 10;
@@ -39,6 +43,32 @@ export default function Home(props: IHomeProps) {
 
   let numLikedPages = Math.floor(songs.length / maxSongShowcase);
   if (songs.length % maxSongShowcase != 0) numLikedPages += 1;
+
+  const fetchPlaylists = async () => {
+    const data = await axios.get("/api/playlists");
+    console.log(data);
+
+    return data.data;
+  };
+
+  const getPlaylists = async () => {
+    try {
+      const resPlaylist = (await fetchPlaylists()) as IResPlaylist;
+      setPlaylists(resPlaylist.data);
+    } catch (err) {
+      console.log("error getting playlist");
+      setPlaylists([]);
+    }
+  };
+  
+  const getIt = () => {
+    getPlaylists();
+  };
+
+  React.useEffect(()=>{
+    getIt();
+  },[])
+
 
   return (
     <div className="flex items-center justify-center">
@@ -97,11 +127,14 @@ export default function Home(props: IHomeProps) {
             </div>
             <div className="relative content-center font-bold text-4xl leading-[54px]">
               My Playlists
-              <div onClick={() => router.push('/home/createplaylist')} className="cursor-pointer absolute bottom-0 right-0 text-sm leading-[21px] text-[#0094FF]" >
+              <div
+                onClick={() => router.push("/home/createplaylist")}
+                className="cursor-pointer absolute bottom-0 right-0 text-sm leading-[21px] text-[#0094FF]"
+              >
                 Create New
               </div>
             </div>
-            {playlists.map(function (data) {
+            {playlists.map((data) => {
               return <PlaylistShowcase key={data.id} playlist={data} />;
             })}
           </div>

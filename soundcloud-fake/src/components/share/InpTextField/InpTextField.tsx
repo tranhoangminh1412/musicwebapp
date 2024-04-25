@@ -100,7 +100,6 @@ export default function InpTextField(props: IInpTextFieldProps) {
 
   React.useEffect(() => {
     if (value) {
-      console.log('value: ' + value)
       setValueLocal(value);
     }
   }, [value]);
@@ -198,7 +197,7 @@ export default function InpTextField(props: IInpTextFieldProps) {
             className="absolute h-[1px] w-full left-0 bottom-0 text-[10px] leading-[15px] text-[#ee5253]"
             style={{ transition: "all .35s ease" }}
           >
-            Invalid field
+            {errorMessage}
           </p>
         ) : (
           <></>

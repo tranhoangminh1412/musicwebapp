@@ -28,5 +28,4 @@ export const artists = [
         plays: 12,
         image: BuiAnhTuan
     },
-    
 ]

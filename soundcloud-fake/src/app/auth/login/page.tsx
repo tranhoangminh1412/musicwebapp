@@ -7,7 +7,6 @@ import { FcGoogle } from "react-icons/fc";
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import https from "https";
 
 import { useRouter } from "next/navigation";
 import { useUserProfileContext } from "@/contexts/ProfileContext";
@@ -25,6 +24,7 @@ import {
   validateUsername,
   validatePassword,
   checkFocusAllInput,
+  validateEmail,
 } from "@/utils/validate";
 
 import IcUsername from "@/assets/app/username.svg";
@@ -34,8 +34,12 @@ import loginImage from "@/assets/app/login-image.png";
 import InpTextField from "@/components/share/InpTextField/InpTextField";
 import FormCheckbox from "@/components/share/FormCheckbox/FormCheckBox";
 import CaseActionButton from "@/components/share/CaseActionBtn/CaseActionBtn";
-import { access } from "fs";
-import { headers } from "next/headers";
+
+const app = require("@/firebaseConfig");
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { users } from "@/constants/users.constant";
+
+const auth = getAuth();
 
 export interface ILoginPageProps {}
 
@@ -71,6 +75,7 @@ export default function LoginPage(props: ILoginPageProps) {
   const formRef = React.useRef(null);
 
   const [username, setUsername] = React.useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -85,14 +90,10 @@ export default function LoginPage(props: ILoginPageProps) {
   // });
 
   // validate
-  const errorUsernameMessage = React.useMemo(() => {
-    let errorMessage = "";
-    if (!username)
-      errorMessage = validateRequired("Username", username, validates);
-    else if (!!validateUsername(username, validates))
-      errorMessage = validateUsername(username, validates);
+  const errorEmailMessage = React.useMemo(() => {
+    let errorMessage = validateEmail(email, validates);
     return errorMessage;
-  }, [username]);
+  }, [email]);
   const errorPasswordMessage = React.useMemo(() => {
     let errorMessage = "";
     if (!password)
@@ -102,10 +103,7 @@ export default function LoginPage(props: ILoginPageProps) {
     return errorMessage;
   }, [password]);
   const errorPassword = React.useMemo(() => !!errorPasswordMessage, [password]);
-  const errorUsername = React.useMemo(
-    () => !!validateUsername(username, validates),
-    [username]
-  );
+  const errorEmail = React.useMemo(() => !!errorEmailMessage, [email]);
 
   const onSubmit = async () => {
     if (formRef.current) {
@@ -114,8 +112,19 @@ export default function LoginPage(props: ILoginPageProps) {
     }
 
     // if no error
-    if (!errorUsername && !errorPassword) {
-      router.push("/");
+    if (!errorEmail && !errorPassword) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + " message: " + errorMessage);
+        });
+      router.push("/home");
     }
   };
 
@@ -196,7 +205,7 @@ export default function LoginPage(props: ILoginPageProps) {
           console.error("Error sending POST request:", error);
         }
       };
-      console.log("Sending POST Data..")
+      console.log("Sending POST Data..");
       postData();
       router.push("/home");
     }
@@ -220,23 +229,23 @@ export default function LoginPage(props: ILoginPageProps) {
           <div ref={formRef} className=" gap-6 flex flex-col  ">
             <InpTextField
               icon={IcUsername}
-              placeholder="Username"
+              placeholder="Email address"
               type="username"
-              value=""
-              onChange={setUsername}
-              error={errorUsername}
-              errorMessage={errorUsernameMessage}
+              value={email}
+              onChange={setEmail}
+              error={errorEmail}
+              errorMessage={errorEmailMessage}
             />
             <InpTextField
               icon={IcPassword}
               placeholder="Password"
               type="password"
-              value=""
+              value={password}
               onChange={setPassword}
               error={errorPassword}
               errorMessage={errorPasswordMessage}
             />
-            <FormCheckbox name="remember" />
+            <FormCheckbox name="remember" onChange={setRemember} />
           </div>
           <CaseActionButton
             color="orange"
