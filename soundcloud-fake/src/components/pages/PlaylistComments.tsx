@@ -12,15 +12,16 @@ import InpTextField from "../share/InpTextField/InpTextField";
 import Comment from "../share/Comment/Comment";
 import ListPages from "../share/ListPages/ListPages";
 import { generateAuthToken } from "@/utils/auth";
+import { ISong } from "@/types/ISong";
 
 generateAuthToken("0");
 
 export interface ISongViewCommentsProps {
-  playlist: IPlaylist;
+  song: ISong
 }
 
 export default function SongViewComments(props: ISongViewCommentsProps) {
-  const { playlist } = props;
+  const { song } = props;
 
   const [sort, setSort] = React.useState("Newest");
   const [show, setShow] = React.useState(false);
@@ -35,15 +36,14 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
       event.key === "Enter" &&
       input.trim() != ""
     ) {
-      comments[playlist.id].contents.push({
+      comments[song.id].contents.push({
         id:
-          comments[playlist.id].contents[
-            comments[playlist.id].contents.length - 1
+          comments[song.id].contents[
+            comments[song.id].contents.length - 1
           ].id + 1,
         authorId: 0,
         content: input,
       });
-      console.log("why");
       setInput("");
     }
   };
@@ -61,9 +61,9 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
   let maxSongShowcase = 5;
 
   let numLikedPages = Math.floor(
-    comments[playlist.id].contents.length / maxSongShowcase
+    comments[song.id].contents.length / maxSongShowcase
   );
-  if (comments[playlist.id].contents.length % maxSongShowcase != 0)
+  if (comments[song.id].contents.length % maxSongShowcase != 0)
     numLikedPages += 1;
 
   let angleDownSVG = (
@@ -96,7 +96,7 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
         {/* {message} */}
         <div className="text-[#979797] text-xs leading-[18px] flex-grow flex items-center">
           <Image className="size-3" src={commentSVG} alt="" /> &nbsp;
-          {comments[playlist.id].contents.length} comments
+          {comments[song.id].contents.length} comments
         </div>
         <div
           className="relative"
@@ -158,7 +158,7 @@ export default function SongViewComments(props: ISongViewCommentsProps) {
         )}
       </div>
       <div className="flex flex-col gap-6 items-center w-full">
-        {comments[playlist.id].contents.map((content) => {
+        {comments[song.id].contents.map((content) => {
           if (
             showSongIndex < maxSongShowcase &&
             content.id < currentPage * maxSongShowcase &&

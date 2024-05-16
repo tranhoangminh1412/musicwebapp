@@ -36,20 +36,22 @@ import FormCheckbox from "@/components/share/FormCheckbox/FormCheckBox";
 import CaseActionButton from "@/components/share/CaseActionBtn/CaseActionBtn";
 
 const app = require("@/firebaseConfig");
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import { users } from "@/constants/users.constant";
+import { setUserProfileContext } from "@/utils/auth";
 
 const auth = getAuth();
+const GAuthProvider = new GoogleAuthProvider();
+GAuthProvider.addScope("email");
+GAuthProvider.addScope("profile");
 
 export interface ILoginPageProps {}
-
-const clientId =
-  "752827926431-6n24u15f6k9al524t0j9hpa2bi24f4f9.apps.googleusercontent.com";
-
-interface UserProfile {
-  access_token: string;
-  // Add other properties as needed
-}
 
 interface IGProfile {
   id: string;
@@ -66,11 +68,8 @@ export default function LoginPage(props: ILoginPageProps) {
   const router = useRouter();
   const validates = messages.validates;
 
-  const [Gprofile, GsetProfile] = useState<IGProfile | null>(null);
   const { profile, setProfile } = useUserProfileContext();
   const { authenticated, setAuthenticated } = useAuthContext();
-  // const [value, setValue] = useLocalStorage("authStatus","0")
-  // const [authStatus,setAuthStatus] = useState(value)
 
   const formRef = React.useRef(null);
 
@@ -78,16 +77,12 @@ export default function LoginPage(props: ILoginPageProps) {
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [shake, setShake] = useState(false)
+  const [loginErr, setLoginErr] = useState({
+    error: false,
+    message: "",
+  });
 
-  // const saveToLocalStorage = (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault()
-  //   setValue(authStatus)
-  // }
-  // const agent = new https.Agent({
-  //   rejectUnauthorized: false,
-  // });
-
-  // validate
   const errorEmailMessage = React.useMemo(() => {
     let errorMessage = validateEmail(email, validates);
     return errorMessage;
@@ -96,8 +91,6 @@ export default function LoginPage(props: ILoginPageProps) {
     let errorMessage = "";
     if (!password)
       errorMessage = validateRequired("Password", password, validates);
-    else if (!!validatePassword(password, validates))
-      errorMessage = validatePassword(password, validates);
     return errorMessage;
   }, [password]);
   const errorPassword = React.useMemo(() => !!errorPasswordMessage, [password]);
@@ -115,16 +108,71 @@ export default function LoginPage(props: ILoginPageProps) {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          // ...
+
+          setProfile({
+            id: user.uid,
+            email: user.email,
+            fullname: user.displayName,
+            password: password,
+            avatarUrl: user.photoURL,
+          });
+          setAuthenticated(true);
+          router.push("/home");
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode + " message: " + errorMessage);
+          setLoginErr({
+            error: true,
+            message: errorCode,
+          });
+          setShake(true)
         });
-      router.push("/home");
     }
   };
+
+  const signInWithGoogle = () => {
+    console.log("working");
+    signInWithPopup(auth, GAuthProvider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (credential) {
+          const token = credential.accessToken;
+        } else {
+          console.log("No Credentials Supplied");
+        }
+        // The signed-in user info.
+        if (result.user) {
+          const user = result.user;
+          // IdP data available using getAdditionalUserInfo(result)
+          // ...
+          console.log("setting user profile");
+          setProfile({
+            id: user.uid,
+            email: user.email,
+            fullname: user.displayName,
+            password: "",
+            avatarUrl: user.photoURL,
+          });
+          setAuthenticated(true);
+          router.push("/home")
+        }
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
+  };
+
+  useEffect(()=>{setTimeout(()=>{setShake(false)},350)},[shake])
 
   return (
     <div className="flex align-middle content-center my-[110px] mx-[260px] ">
@@ -153,35 +201,32 @@ export default function LoginPage(props: ILoginPageProps) {
               value={password}
               onChange={setPassword}
               error={errorPassword}
-              errorMessage={errorPasswordMessage}
             />
             <FormCheckbox name="remember" onChange={setRemember} />
           </div>
+          {loginErr.error == true && (
+            <p
+              className={`h-[1px] w-full left-0 bottom-0 text-[10px] leading-[15px] text-[#ee5253] ${shake && 'animate-[shake_0.3s_ease-in-out]'} `}
+            >
+              {loginErr.message == 'auth/invalid-credential' && 'Invalid Credentials'}
+            </p>
+          )}
           <CaseActionButton
             color="orange"
             text="Submit"
             onClick={onSubmit}
             className="!py-3 !flex-wrap"
           />
-          {/* <div className="self-center">or Sign in with Google</div> */}
-          {/* <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          /> */}
-          {/* <div className="shadow-2xl">
+          <div className="shadow-2xl">
             <button
               type="button"
               className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-              onClick={() => login()}
+              onClick={() => signInWithGoogle()}
             >
               <FcGoogle className="mr-4" />
               Sign in with Google
             </button>
-          </div> */}
+          </div>
           <p className="self-center">
             or{" "}
             <a

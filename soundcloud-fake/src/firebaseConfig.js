@@ -3,7 +3,14 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
+
+import axios from "axios";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,14 +32,42 @@ export const app = initializeApp(firebaseConfig);
 
 export const storage = getStorage();
 export const auth = getAuth();
-
+export const GAuthProvider = new GoogleAuthProvider();
+GAuthProvider.addScope("email");
+GAuthProvider.addScope("profile");
 const storageRef = ref(storage);
 
-console.log(storageRef);
-
-export const getFirebaseImage = async (fileName,setterFunc) => {
+export const getFirebaseImage = async (fileName, setterFunc) => {
   const imagesRef = ref(storageRef, fileName);
   getDownloadURL(imagesRef).then((url) => {
-    setterFunc(url)
+    setterFunc(url);
+  });
+};
+
+export const getFirebaseFile = async (fileName, setterFunc) => {
+  const fileRef = ref(storageRef, fileName);
+  const url = await getDownloadURL(fileRef);
+  console.log(url);
+  setterFunc(url)
+  return url; // Return the URL if needed
+};
+
+export const getAuthState = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const uid = user.uid;
+      console.log("A user is signed in");
+      console.log(user.email);
+      axios.post("/api/currentuser")
+      return user.email;
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      console.log("No user is signed in");
+      return null
+    }
   });
 };

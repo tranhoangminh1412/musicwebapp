@@ -38,5 +38,3 @@ export const users : IUser[] = [
         avatarUrl: "",
     }
 ]
-
-module.exports = users;

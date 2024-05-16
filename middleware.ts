@@ -3,7 +3,6 @@
 // // import { pathToRegexp } from "path-to-regexp";
 
 // // export function middleware(request: NextRequest) {
-// //   console.log("IN MIDDLEWARE");
 
 // //   const authenticated = window.localStorage.getItem("authStatus")
 // //     if (authenticated == "1")
@@ -43,7 +42,6 @@
 //           // Set the variable to true
 //           isAuthStatusOne = true;
 //           // Perform logic for valid POST request
-//           console.log("Performing logic for valid POST request");
 //         } else {
 //           isAuthStatusOne = false;
 //         }

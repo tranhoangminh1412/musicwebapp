@@ -14,21 +14,25 @@ import btnRight from "@/assets/app/btn-right.svg";
 import { orderedPopularPlaylist } from "@/utils/orderPopularPlaylists";
 import { orderedPopularArtists } from "@/utils/orderPopularArtist";
 
-import { songs } from "@/constants/songs.constant";
-
 import TopArtist from "@/components/pages/TopArtist";
 import SongShowcase from "@/components/pages/SongShowcase";
 import ListPages from "@/components/share/ListPages/ListPages";
 import PlaylistShowcase from "@/components/share/PlaylistShowcase/PlaylistShowcase";
 import TopPlaylistAuthorContainer from "@/components/pages/TopPlaylistAuthorContainer";
 import { IPlaylist } from "@/types/IPlaylist";
-import { IResPlaylist } from "@/types/res.type";
+import { IResPlaylist, IResSongs } from "@/types/res.type";
+import { ISong } from "@/types/ISong";
+import GlobalFooter from "@/components/layouts/GlobalFooter";
+import { useSongContext } from "@/contexts/SongContext";
+import { getSongs } from "@/utils/getDataFromFirebase";
 
 export interface IHomeProps {}
 
 export default function Home(props: IHomeProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
+  const [songs, setSongs] = useState<ISong[]>([]);
+  const { currentSong, setCurrentSong } = useSongContext();
 
   let showSongIndex: number = 0;
   let maxSongShowcase = 10;
@@ -41,15 +45,15 @@ export default function Home(props: IHomeProps) {
   const popularPlaylists = orderedPopularPlaylist();
   const popularArtists = orderedPopularArtists();
 
-  let numLikedPages = Math.floor(songs.length / maxSongShowcase);
-  if (songs.length % maxSongShowcase != 0) numLikedPages += 1;
-
   const fetchPlaylists = async () => {
     const data = await axios.get("/api/playlists");
-    console.log(data);
-
     return data.data;
   };
+
+
+  React.useEffect(() => {
+    getSongs(setSongs);
+  }, []);
 
   const getPlaylists = async () => {
     try {
@@ -60,17 +64,20 @@ export default function Home(props: IHomeProps) {
       setPlaylists([]);
     }
   };
-  
-  const getIt = () => {
+
+  React.useEffect(() => {
     getPlaylists();
-  };
+  }, []);
 
-  React.useEffect(()=>{
-    getIt();
-  },[])
+  let numLikedPages = 0;
 
+  if (songs) {
+    numLikedPages = Math.floor(songs.length / maxSongShowcase);
+    if (songs.length % maxSongShowcase != 0) numLikedPages += 1;
+  }
 
   return (
+    <>
     <div className="flex items-center justify-center">
       <div className="flex flex-col relative w-[1400px] gap-[64px] mt-12">
         <div className="gap-[14px] ">
@@ -87,7 +94,7 @@ export default function Home(props: IHomeProps) {
           <div className="flex flex-col gap-6">
             <div>
               <div className="content-center font-bold text-4xl leading-[54px]">
-                Liked songs
+                Songs in DB
               </div>
               <div className="min-w-[887px] flex items-center border-b border-[#DCDCDC] p-2">
                 <div className="flex items-center content-center font-medium text-sm leading-[21px] w-[60px]">
@@ -107,7 +114,7 @@ export default function Home(props: IHomeProps) {
                 </div>
                 <div className="w-[100px] px-[10px] py-2 text-sm leading-[21px] flex gap-4"></div>
               </div>
-              {songs.map(function (data) {
+              {songs?.map(function (data) {
                 if (
                   showSongIndex < maxSongShowcase &&
                   data.id < currentPage * maxSongShowcase &&
@@ -151,5 +158,7 @@ export default function Home(props: IHomeProps) {
         </div>
       </div>
     </div>
+      { currentSong && <GlobalFooter />}
+      </>
   );
 }

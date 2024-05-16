@@ -9,4 +9,6 @@ export type ISong = {
   genre: string;
   image: StaticImageData;
   likes: number;
+  description?: string;
+  audio: string;
 };

@@ -2,10 +2,10 @@
 
 import React, { useContext } from "react";
 
-import { IUser } from "@/types/IUser";
+import { IFirebaseUser } from "@/types/IFirebaseUser";
 
 export interface IUserProfileContext {
-  profile: IUser | null;
+  profile: IFirebaseUser | null;
   setProfile: any;
 }
 

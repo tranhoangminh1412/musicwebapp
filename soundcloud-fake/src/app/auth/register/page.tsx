@@ -28,7 +28,8 @@ import CaseActionButton from "@/components/share/CaseActionBtn/CaseActionBtn";
 
 const app = require("@/firebaseConfig");
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { users } from "@/constants/users.constant";
+import { setUserProfileContext } from "@/utils/auth";
+import { useAuthContext } from "@/contexts/AuthContext";
 
 const auth = getAuth();
 
@@ -48,6 +49,8 @@ export default function RegisterPage(props: IRegisterPageProps) {
   const [repeat, setRepeat] = React.useState("");
   const [accept, setAccept] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [inUse,setInUse] = React.useState(false)
+  const {authenticated,setAuthenticated}= useAuthContext();
 
   const validates = messages.validates;
   // validate
@@ -65,6 +68,8 @@ export default function RegisterPage(props: IRegisterPageProps) {
     return errorMessage;
   }, [username]);
   const errorEmailMessage = React.useMemo(() => {
+    //setInUse to false when re-entering email
+    if(email) setInUse(false)
     let errorMessage = validateEmail(email, validates);
     return errorMessage;
   }, [email]);
@@ -109,7 +114,16 @@ export default function RegisterPage(props: IRegisterPageProps) {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-
+          console.log('setting user profile');
+          
+          setProfile({
+            id: user.uid,
+            email:user.email,
+            fullname:user.displayName,
+            password:'',
+            avatarUrl:user.photoURL
+          })
+          setAuthenticated(true)
           // ...
         })
         .catch((error) => {
@@ -117,6 +131,24 @@ export default function RegisterPage(props: IRegisterPageProps) {
           const errorMessage = error.message;
           console.log(errorCode + " message: " + errorMessage);
           // ..
+          switch (error.code) {
+            case 'auth/email-already-in-use':
+              console.log(`Email address already in use.`);
+              setInUse(true)
+              break;
+            case 'auth/invalid-email':
+              console.log(`Email address is invalid.`);
+              break;
+            case 'auth/operation-not-allowed':
+              console.log(`Error during sign up.`);
+              break;
+            case 'auth/weak-password':
+              console.log('Password is not strong enough. Add additional characters including special characters and numbers.');
+              break;
+            default:
+              console.log(error.message);
+              break;
+          }
         });
       router.push("/home");
     }
@@ -179,12 +211,13 @@ export default function RegisterPage(props: IRegisterPageProps) {
               errorMessage={errorRepeatMessage}
             />
             <div className="flex relative">
-              <p className=" absolute top-[-5px] left-[13px] text-sm leading-[21px] text-[#ee5253]">
+              <p className=" absolute top-[-6px] left-[15px] text-sm leading-[21px] text-[#ee5253]">
                 *
               </p>
 
               <FormCheckbox name="accept" onChange={setAccept} />
             </div>
+            {inUse && <p className="text-sm leading-[21px] text-[#ee5253]">Email already in use, sign in instead</p>}
           </div>
           <CaseActionButton
             color="orange"

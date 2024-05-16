@@ -16,6 +16,14 @@ import IcSearch from "@/assets/icons/IcSearch";
 import IcLogo from "@/assets/icons/IcLogo";
 import addPlaylist from "@/assets/app/addPlaylist.svg";
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const { app } = require("@/firebaseConfig");
+import { auth } from "@/firebaseConfig";
+
+import { signOut } from "firebase/auth";
+import { useSongContext } from "@/contexts/SongContext";
+import { useCurrentPlayingContext } from "@/contexts/CurrentPlayingContext";
+
 export interface IGlobalHeaderProps {
   className?: string;
 }
@@ -35,6 +43,8 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
 
   const { profile, setProfile } = useUserProfileContext();
   const { authenticated, setAuthenticated } = useAuthContext();
+  const {currentSong,setCurrentSong} = useSongContext()
+  const {current,setCurrent} = useCurrentPlayingContext()
 
   const handleClickAvatar = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -49,27 +59,48 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
   };
 
   async function googleLogout() {
-    try {
-      // Revoke the access token
-      // await oauth2Client.revokeCredentials();
-
-      // Additional logout steps (if any)
-      // For example, clearing user session, etc.
-      setProfile(null);
-      setAuthenticated(false);
-      router.push("/auth/login");
-      console.log("Logout successful");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
+    signOut(auth)
+      .then(() => {
+        onLogoutSuccess();
+        console.log("Logout successful");
+      })
+      .catch((error) => {
+        console.error("Error logging out:", error);
+      });
   }
+
+  React.useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setProfile({
+          id: user.uid,
+          email: user.email,
+          fullname: user.displayName,
+          password: "",
+          avatarUrl: user.photoURL,
+        });
+        setAuthenticated(true);
+      } else {
+        router.push("/auth/login");
+      }
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (profile) {
+      setAuthenticated(true);
+    }
+    else{
+      setAuthenticated(false)
+    }
+  }, []);
 
   return (
     <header
       className={`sticky top-0 px-10 flex items-center z-[100] h-[80px] bg-[#2B2B2B] justify-center gap-[200px] ${className}`}
       suppressHydrationWarning={true}
     >
-      <Link onClick={() => router.push("/")} href="/">
+      <Link onClick={() => router.push("/home")} href="/home">
         <IcLogo />
       </Link>
 
@@ -105,6 +136,7 @@ export default function GlobalHeader(props: IGlobalHeaderProps) {
                 color="white"
                 label={addPlaylist}
                 text="Create Playlist"
+                onClick={() => router.push("/home/createplaylist")}
               />
               <div className="w-9 h-9">
                 <Avatar

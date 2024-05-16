@@ -111,7 +111,7 @@ export default function SongViewAction(props: ISongViewActionProps) {
           <p className="text-xs leading-[18px] text-[#979797]">{song.plays}</p>
         </div>
         <div className="flex gap-2 items-center">
-          <Image objectFit="cover" className="size-[12px]" src={heart} alt="" />
+          <Image style={{objectFit:'cover'}} className="size-[12px]" src={heart} alt="" />
           <p className="text-xs leading-[18px] text-[#979797]">{song.likes}</p>
         </div>
       </div>

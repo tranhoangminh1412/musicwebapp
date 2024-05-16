@@ -1,5 +1,4 @@
 const express = require("express");
-// const sqlite3 = require("sqlite3").verbose();
 const path = require("node:path");
 const PORT = 3000;
 const next = require("next"); // Include module next
@@ -9,36 +8,6 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const users = require('./data')
-
-// let sql;
-
-// console.log(__dirname);
-
-// const db = new sqlite3.Database(
-//   __dirname + "/test.db",
-//   sqlite3.OPEN_READWRITE,
-//   (err) => {
-//     if (err) return console.log(err);
-//   }
-// );
-
-// sql = `CREATE TABLE users(id INTEGER PRIMARY KEY,name,username,password,favSongs,favPlaylists,avatarUrl)`;
-// db.run(sql);
-
-// const cols = users.keys(values).join(", ");
-// const placeholders = users.keys(values).fill("?").join(", ");
-// db.run(
-//   "INSERT INTO users (" + cols + ") VALUES (" + placeholders + ")",
-//   users.values(values)
-// ),
-//   (err) => {
-//     console.log(err);
-//   };
-
-// sql = `INSERT INTO users(name,username,password,avatarUrl) VALUES(?,?,?,?)`
-// db.run(sql,["fredson","fred","test","hisAvatarUrl"],(err)=>{
-//     if (err) return console.error(err.message)
-// })
 
 app.prepare().then(() => {
   const server = express();
@@ -54,7 +23,6 @@ app.prepare().then(() => {
   server.use(express.urlencoded({extended:false}))
   server.use(express.json())
 
-  //Tạo ra các router. Dòng này có ý nghĩa khi gửi request đến path /a . Sẽ render file /a.js trong thư mục pages/a.js của Nextjs
   server.get("/api/home", (req, res) => {
     res.json({ message: "Hello World!" });
   });

@@ -39,20 +39,23 @@ export default function ListPages(props: IListPagesProps) {
   }, [currentPage, numPages]);
 
   const prev = () => {
-    if(currentPage != 1){
-        setCurrentPage(currentPage-1)
+    if (currentPage != 1) {
+      setCurrentPage(currentPage - 1);
     }
-  }
+  };
   const next = () => {
-    if(currentPage != numPages){
-        setCurrentPage(currentPage+1)
+    if (currentPage != numPages) {
+      setCurrentPage(currentPage + 1);
     }
-  }
+  };
 
   return (
     <div className="py-[10px] float-end">
       <div className="ml-auto flex gap-[10px] items-center">
-        <div onClick={prev} className=" cursor-pointer font-medium text-xs leading-[18px] text-[#979797]">
+        <div
+          onClick={prev}
+          className=" cursor-pointer font-medium text-xs leading-[18px] text-[#979797]"
+        >
           Previous
         </div>
         {currentPage == 3 && (
@@ -80,6 +83,7 @@ export default function ListPages(props: IListPagesProps) {
           if (data + 1 == currentPage || data - 1 == currentPage) {
             return (
               <div
+                key={data}
                 onClick={() => setCurrentPage(data)}
                 className="cursor-pointer font-medium text-xs leading-[18px] text-[#979797] rounded-full px-[6px] size-5"
               >
@@ -88,7 +92,7 @@ export default function ListPages(props: IListPagesProps) {
             );
           } else if (data == currentPage) {
             return (
-              <div className="cursor-pointer font-medium text-xs leading-[18px] text-[#F0F0F0] bg-[#FF6B00] rounded-full px-[6px] size-5 text-center">
+              <div key={data} className="cursor-pointer font-medium text-xs leading-[18px] text-[#F0F0F0] bg-[#FF6B00] rounded-full px-[6px] size-5 text-center">
                 {currentPage}
               </div>
             );
@@ -115,7 +119,10 @@ export default function ListPages(props: IListPagesProps) {
             {numPages}
           </div>
         )}
-        <div onClick={next} className="cursor-pointer font-medium text-xs leading-[18px] text-[#979797] rounded-full px-[6px] size-5">
+        <div
+          onClick={next}
+          className="cursor-pointer font-medium text-xs leading-[18px] text-[#979797] rounded-full px-[6px] size-5"
+        >
           Next
         </div>
       </div>

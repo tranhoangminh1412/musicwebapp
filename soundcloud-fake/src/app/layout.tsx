@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import GlobalHeader from "@/components/layouts/GlobalHeader";
 import { Providers } from "@/providers/providers";
-import { useAuthContext } from "@/contexts/AuthContext";
-import { useUserProfileContext } from "@/contexts/ProfileContext";
+import GlobalFooter from "@/components/layouts/GlobalFooter";
+import { useSongContext } from "@/contexts/SongContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,7 +26,8 @@ export default function RootLayout({
         <Providers>
           <GlobalHeader />
           {children}
-        </Providers>  
+          
+        </Providers>
       </body>
     </html>
   );

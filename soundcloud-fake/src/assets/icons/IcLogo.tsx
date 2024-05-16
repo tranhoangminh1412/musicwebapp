@@ -9,7 +9,7 @@ export interface IIcLogoProps {
 export default function IcLogo (props: IIcLogoProps) {
   return (
     <div className="!w-[240px] object-cover" >
-      <Image className='!w-[240px] object-cover' src={logo} alt='' />
+      <Image className='!w-[240px] object-cover' src={logo} alt='' priority/>
     </div>
   );
 }

@@ -12,6 +12,8 @@ import { ISong } from "@/types/ISong";
 import { PlaylistInfo } from "@/types/IPlaylistInfo";
 import { playlists } from "@/constants/playlists.constant";
 import { IPlaylist } from "@/types/IPlaylist";
+import { useUserProfileContext } from "@/contexts/ProfileContext";
+import { getSongs } from "@/utils/getDataFromFirebase";
 
 export interface ICreatePlaylist2Props {
   setPage: React.Dispatch<React.SetStateAction<number>>;
@@ -31,8 +33,14 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
   const [showDropdown, setShowDropdown] = React.useState(true);
   const [selectedSong, setSelectedSong] = React.useState<ISong>();
   const [searchInput, setSearchInput] = React.useState<string>();
-  const [songList, setSongList] = React.useState([...songs]);
+  const [songList, setSongList] = React.useState<ISong[]>([]);
+  const [songs, setSongs] = React.useState<ISong[]>([]);
   const [error, setError] = React.useState(false);
+  const {profile,setProfile} = useUserProfileContext()
+
+  React.useEffect(()=>{
+   getSongs(setSongs) 
+  })
 
   React.useEffect(() => {
     let i = finalSongList.findIndex((song) => song == selectedSong?.id);
@@ -41,7 +49,6 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
     } else {
       selectedSong && finalSongList.push(selectedSong.id);
     }
-    console.log(finalSongList)
   }, [selectedSong]);
 
   React.useEffect(() => {
@@ -72,6 +79,7 @@ export default function CreatePlaylist2(props: ICreatePlaylist2Props) {
       image: playlistInfo.img,
       artist: playlistInfo.artist,
       slug: playlistInfo.slug,
+      author: 'author',
     };
     return formattedNewPlaylist;
   };

@@ -112,7 +112,7 @@ export default function InpTextField(props: IInpTextFieldProps) {
   return (
     <div className={`w-full ${className}`}>
       <div
-        className={`flex items-center relative `}
+        className={`flex items-center relative ${type != 'full' && 'py-[10px]'}`}
         style={{ transition: "all .35s ease" }}
       >
         {children &&

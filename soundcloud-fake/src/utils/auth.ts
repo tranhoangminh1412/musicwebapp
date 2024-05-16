@@ -5,6 +5,7 @@ import { JWT } from "google-auth-library";
 import { GoogleAuth } from "google-auth-library";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { useUserProfileContext } from "@/contexts/ProfileContext";
 
 
 dotenv.config();
@@ -32,7 +33,6 @@ export const signIn = (username: string, password: string): IUser | null => {
   if (!user) return null;
   const passwordsMatch = matchPassword(password, user);
   if (passwordsMatch) return user;
-  console.log("Invalid credentials");
   return null;
 };
 
@@ -44,7 +44,6 @@ export function generateAuthToken(userId: string) {
     // Add any additional claims as needed
   };
 
-  console.log(authSecret)
 
   // Generate JWT token with a secret key and expiration time
   // const token = jwt.sign(payload, authSecret as string, {
@@ -55,4 +54,16 @@ export function generateAuthToken(userId: string) {
   // // console.log(token)
 
   // return token;
+}
+
+export const setUserProfileContext = (id:string,email:string, password?:string,avatarUrl?:string,fullname?:string) => {
+  const {profile,setProfile} = useUserProfileContext();
+
+  setProfile({
+    id: id,
+    email:email,
+    fullname:fullname,
+    password:password,
+    avatarUrl:avatarUrl
+  })
 }
