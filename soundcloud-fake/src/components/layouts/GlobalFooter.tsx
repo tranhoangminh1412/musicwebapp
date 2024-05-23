@@ -45,7 +45,6 @@ export default function GlobalFooter(props: IGlobalFooterProps) {
   const [received, setReceived] = React.useState(false);
   const [traverse, setTraverse] = React.useState<boolean>(false);
   const [repeat, setRepeat] = React.useState(false);
-  const [songEnd, setSongEnd] = React.useState(false);
 
   const router = useRouter();
 
