@@ -28,7 +28,7 @@ The Music Web App enables users to:
 
 1. Clone the repository:
     ```bash
-   git clone https://github.com/yourusername/music-web-app.git
+   git clone https://github.com/tranhoangminh1412/music-web-app
    cd music-web-app
 2. Install dependencies for both client and server:
   
