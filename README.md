@@ -33,18 +33,13 @@ The Music Web App enables users to:
 2. Install dependencies for both client and server:
   
     ```bash
-    cd client
-    npm install
-    cd ../server
+    cd soundcloud-fake
     npm install
 
 - Set up Firebase credentials in server/config and create .env files for JWT secrets.
 
 3. Usage
-- Start the Backend: Run the following in the server/ directory:
-  ```bash
-  npm start
-- Start the Frontend: Run the following in the client/ directory:
+- Start the App: Run the following in the /soundcloud-fake directory:
   ```bash
   npm start
 - Access the app at http://localhost:3000 in a web browser.
