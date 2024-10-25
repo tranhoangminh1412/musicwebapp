@@ -49,9 +49,9 @@ The Music Web App enables users to:
 - Playlist Management: Create, view, and manage personal playlists
 - Liked Songs: Track user-specific liked songs with a separate list
 
-##Future Work
+## Future Work
 - Expand user interactions, including social features (e.g., following other users' playlists)
 - Add recommendation engine based on user listening history
 
-##License
+## License
 This project is licensed under the MIT License.
